@@ -6,15 +6,28 @@ public class Ray {
     Point p0;
     Vector dir;
 
+    /**
+     * constructor
+     * @param p0
+     * @param dir
+     */
     public Ray(Point p0, Vector dir) {
         this.p0 = p0;
         this.dir = dir ;
     }
 
+    /**
+     *
+     * @return point
+     */
     public Point getP0() {
         return p0;
     }
 
+    /**
+     *
+     * @return direction of vector
+     */
     public Vector getDir() {
         return dir;
     }

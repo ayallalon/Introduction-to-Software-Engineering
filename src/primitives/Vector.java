@@ -83,21 +83,6 @@ public class Vector extends Point {
         return new Vector(cx, cy, cz);
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    public Vector normalize() {
-        Double len = length();
-        return new Vector(_xyz.reduce(len));
-    }
-
     /**
      * Sum two vector into a new vector where each couple of numbers
      * is summarized
@@ -119,4 +104,19 @@ public class Vector extends Point {
         return new Vector(_xyz.scale(scalar));
 
     }
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    public Vector normalize() {
+        Double len = length();
+        return new Vector(_xyz.reduce(len));
+    }
+
 }

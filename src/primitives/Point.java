@@ -56,8 +56,6 @@ public class Point {
         return Objects.hash(_xyz);
     }
 
-
-
     /**
      *calculate the squared distance of two point
      *

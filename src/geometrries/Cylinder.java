@@ -1,15 +1,13 @@
 package geometrries;
 
-import primitives.Point;
 import primitives.Ray;
-import primitives.Vector;
 
 /**
  * Cylinder extends Tube
  */
 public class Cylinder extends Tube {
 
-    public double height;
+    private final double _height;
 
     /**
      * constructor
@@ -18,18 +16,8 @@ public class Cylinder extends Tube {
      * @param height for the Cylinder
      */
     public Cylinder(double radius, Ray ray, double height) {
-        super(radius , ray);
-        this.height = height;
-    }
-
-    /**
-     * normul for Cylinder
-     * @param point
-     * @return normal to Cylinder
-     */
-    @Override
-    public Vector getNormal(Point point) {
-        return super.getNormal(point);
+        super(radius, ray);
+        this._height = height;
     }
 
     /**
@@ -37,7 +25,7 @@ public class Cylinder extends Tube {
      * @return height
      */
     public double getHeight() {
-        return height;
+        return _height;
     }
 
     /**
@@ -46,8 +34,8 @@ public class Cylinder extends Tube {
     @Override
     public String toString() {
         return "Cylinder : " +
-                "height=" + height +
-                ", radius=" + radius +
-                ", ray=" + _ray;
+               "height=" + _height +
+               ", radius=" + _radius +
+               ", ray=" + _ray;
     }
 }

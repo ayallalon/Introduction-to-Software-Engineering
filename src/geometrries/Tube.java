@@ -1,59 +1,65 @@
 package geometrries;
 
+
+import static primitives.Util.isZero;
+
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-public class Tube implements Geometry{
+public class Tube implements Geometry {
 
-    public double radius;
-    final Ray _ray;
+    protected final Ray _ray;
+    protected final double _radius;
 
     /**
-     * constructor
+     * Constructor
      * @param radius type double
      * @param ray type ray
      */
     public Tube(double radius, Ray ray) {
-        this.radius = radius;
+        _radius = radius;
         _ray = ray;
     }
 
-    /**
-     * get Radius
-     * @return Radius
-     */
     public double getRadius() {
-        return radius;
+        return _radius;
     }
 
-    /**
-     * get Ray
-     * @return Ray
-     */
     public Ray getRay() {
         return _ray;
     }
 
 
     /**
-     * print tube's radius and ray
+     * Print tube's radius and ray
      */
     @Override
-    public String  toString() {
-        return "Tube{" +
-                "radius=" + radius +
-                ", ray=" + _ray +
-                '}';
+    public String toString() {
+        return "Tube{" + "radius=" + _radius + ", ray=" + _ray + '}';
     }
 
     /**
-     * get Normal
-     * @param point
-     * @return normal vector from the point to the tube
+     * @return normal from the point to geometrries
      */
     @Override
-    public Vector getNormal(Point point) {
-        return null;
+    public primitives.Vector getNormal(Point point) {
+        {
+            {
+                Point p0 = _ray.getP0();
+                Vector v = _ray.getDir();
+                Vector p0_p = point.subtract(p0);
+
+                double w = v.dotProduct(p0_p);
+
+                if (isZero(w)) {
+                    return p0_p;
+                }
+
+                Point startP = p0.add(v.scale(w));
+                Vector n = point.subtract(startP);
+                return n.normalize();
+            }
+        }
     }
 }

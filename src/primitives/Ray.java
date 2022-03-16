@@ -3,52 +3,46 @@ package primitives;
 import java.util.Objects;
 
 public class Ray {
-    Point p0;
-    Vector dir;
+    private final Point _p0;
+    private final Vector _dir;
 
     /**
-     * constructor
-     * @param p0
-     * @param dir
+     * Constructor
      */
     public Ray(Point p0, Vector dir) {
-        this.p0 = p0;
-        this.dir = dir ;
+        this._p0 = p0;
+        this._dir = dir;
     }
 
-    /**
-     *
-     * @return point
-     */
     public Point getP0() {
-        return p0;
+        return _p0;
     }
 
-    /**
-     *
-     * @return direction of vector
-     */
     public Vector getDir() {
-        return dir;
+        return _dir;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getP0(), getDir());
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Ray)) return false;
-        Ray ray = (Ray) o;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Ray)) {
+            return false;
+        }
+        Ray ray = (Ray)o;
         return getP0().equals(ray.getP0()) && getDir().equals(ray.getDir());
     }
 
     @Override
     public String toString() {
         return "Ray : " +
-                "p0=" + p0 +
-                ", direction=" + dir;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getP0(), getDir());
+               "p0=" + _p0 +
+               ", direction=" + _dir;
     }
 }

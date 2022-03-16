@@ -3,55 +3,51 @@ package geometrries;
 import primitives.Point;
 import primitives.Vector;
 
-public class Sphere implements Geometry{
+public class Sphere implements Geometry {
 
-    final Point _center ;
-    private double radius;
+    private final Point _center;
+    private final double _radius;
 
     /**
-     * constructor
+     * Constructor
      * @param center type point
      * @param radius type double
      */
     public Sphere(Point center, double radius) {
         _center = center;
-        this.radius = radius;
+        this._radius = radius;
     }
 
-    /**
-     * get Center
-     * @return Center
-     */
+
     public Point getCenter() {
         return _center;
     }
 
-    /**
-     * get Radius
-     * @return Radius
-     */
+
     public double getRadius() {
-        return radius;
+        return _radius;
     }
 
     /**
-     * print sphere's center and radius
+     * Print sphere's center and radius
      */
     @Override
     public String toString() {
-        return "Sphere : " +
-                "center=" + _center +
-                ", radius=" + radius ;
+        return "Sphere : " + "center=" + _center + ", radius=" + _radius;
     }
 
 
     /**
-     * get Normal
-     * @param point
+     * Get Normal
      * @return normal vector from the point to sphere
      */
     @Override
     public Vector getNormal(Point point) {
-        return null;
+        /**
+         if(point.equals(_center)){
+         throw new IllegalArgumentException("ERROR - p equal center");}
+         */
+        Vector n = point.subtract(_center);
+        return n.normalize();
     }
 }

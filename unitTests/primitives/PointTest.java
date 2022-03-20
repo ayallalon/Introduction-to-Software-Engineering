@@ -13,7 +13,11 @@ class PointTest {
      */
     @org.junit.jupiter.api.Test
     void testDistanceSquared() {
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Simple test
+        Point p2 = new Point(3, 4, 5);
 
+        assertEquals(12, p1.distanceSquared(p2), "ERROR: wrong distance squared.");
     }
 
     /**
@@ -35,7 +39,7 @@ class PointTest {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Simple test
         assertEquals(new Vector(1, 1, 1), new Point(2, 3, 4).subtract(p1),
-                     "ERROR: Point + Vector does not work correctly");
+                     "ERROR: Point - Vector does not work correctly");
     }
 
     /**
@@ -43,5 +47,9 @@ class PointTest {
      */
     @org.junit.jupiter.api.Test
     void testDistance() {
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Simple test
+        Point p2 = new Point(3, 4, 5);
+        assertEquals(Math.sqrt(12), p1.distance(p2), "ERROR: wrong distance between points.");
     }
 }

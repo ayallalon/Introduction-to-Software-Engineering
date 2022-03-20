@@ -1,8 +1,8 @@
 package geometrries;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static primitives.Util.isZero;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import primitives.Point;
 import primitives.Vector;
@@ -15,25 +15,40 @@ class PlaneTest {
     void testConstructor() {
 
         // ============ Equivalence Partitions Tests ==============
-        /** check if first point and tha second point are merge*/
 
-        Point a = new Point(0, 1, 1);
-        Point b = new Point(-2, 1, 0);
-        Point c = new Point(5, 0, 2);
-
-        Plane plane = new Plane(a, b, c);
-        Vector normal = plane.getNormal();
-
-        // TC01: the test check if the fun getNormal calculated correct
-        assertEquals(new Vector(1, 7, 2), normal, "Error:constructor is not calculated correct");
-
-        // TC02: the test check if the length of normal different from 1
-        assertTrue(isZero(normal.length() - 1),
-                   "Error: Plane getNormal not returning correct value");
+        try {
+            Plane plane = new Plane(new Point(0, 1, 1),
+                                    new Point(-2, 1, 0),
+                                    new Point(5, 0, 2));
+        } catch (IllegalArgumentException e) {
+            fail("failed constructing plane");
+        }
+        // TC01: first point and second point are same
+        assertThrows(IllegalArgumentException.class,
+                     () -> new Plane(new Point(1, 1, 1), new Point(1, 1, 1), new Point(1, 2, 1)),
+                     "Constructed a plane with tow equal points");
+        // TC02: three point are on the same line
+        assertThrows(IllegalArgumentException.class,
+                     () -> new Plane(new Point(2, 1, 0), new Point(5, 0, 3),
+                                     new Point(3.5, 0.5, 1.5)),
+                     "Constructed a plane with tow equal points");
     }
 
+
+    /**
+     * Test method for {@link Plane#getNormal(primitives.Point)}.
+     */
     @org.junit.jupiter.api.Test
     void testGetNormal() {
-
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: check if getNormal calculated correct
+        Plane plane = new Plane(new Point(0, 0, 1),
+                                new Point(1, 0, 0),
+                                new Point(0, 1, 0));
+        double sqrt3 = Math.sqrt(1d / 3);
+        assertEquals(new Vector(sqrt3, sqrt3, sqrt3), plane.getNormal(new Point(0, 0, 1)),
+                     "Error: Plane getNormal not returning correct value");
+        // TC02: the test check if the length of normal different from 1
+        assertEquals(1, plane.getNormal().length(), "ERROR: the length different from 1");
     }
 }

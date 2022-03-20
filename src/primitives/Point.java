@@ -91,6 +91,7 @@ public class Point {
         double z2 = other._xyz._d1;
         return ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1));
     }
+  
 
     /**
      * Calculate the distance of two point

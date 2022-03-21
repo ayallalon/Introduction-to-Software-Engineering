@@ -3,9 +3,11 @@ package geometrries;
 
 import static primitives.Util.isZero;
 
+import java.util.List;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+
 
 public class Tube implements Geometry {
 
@@ -61,5 +63,10 @@ public class Tube implements Geometry {
                 return n.normalize();
             }
         }
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return null;
     }
 }

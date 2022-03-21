@@ -37,4 +37,9 @@ public class Triangle extends Polygon {
     public Vector getNormal(Point point) {
         return super.getNormal(point);
     }
+
+    @Override
+    public java.util.List<primitives.Point> findIntersections(primitives.Ray ray) {
+        return null;
+    }
 }

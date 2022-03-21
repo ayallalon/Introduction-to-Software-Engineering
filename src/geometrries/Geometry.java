@@ -3,10 +3,9 @@ package geometrries;
 import primitives.Point;
 import primitives.Vector;
 
-public interface Geometry {
+public interface Geometry extends Intersectable {
     /**
-     * @param point
      * @return normal from the point to geometrries
      */
-    public Vector getNormal(Point point);
+    Vector getNormal(Point point);
 }

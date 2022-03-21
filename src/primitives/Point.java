@@ -33,6 +33,14 @@ public class Point {
         return _xyz;
     }
 
+    public double getX() {
+        return _xyz._d1;
+    }
+
+    public double getY() {
+        return _xyz._d2;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(_xyz);

@@ -13,7 +13,7 @@ public class Ray {
      */
     public Ray(Point p0, Vector dir) {
         this._p0 = p0;
-        this._dir = dir;
+        this._dir = dir.normalize();
     }
 
     /**
@@ -31,7 +31,7 @@ public class Ray {
      */
     public Point getPoint(double delta ){
         if (isZero(delta)){return  _p0;}
-        return _p0.add(_dir.scale(delta));
+        return _p0.add(_dir.normalize().scale(delta));
     }
 
     /**

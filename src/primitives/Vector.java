@@ -27,7 +27,9 @@ public class Vector extends Point {
      * @return length Squared of vector
      */
     public double lengthSquared() {
-        return _xyz._d1 * _xyz._d1 + _xyz._d2 * _xyz._d2 + _xyz._d3 * _xyz._d3;
+        return _xyz._d1 * _xyz._d1 +
+                _xyz._d2 * _xyz._d2 +
+                _xyz._d3 * _xyz._d3;
     }
 
     /**
@@ -43,7 +45,9 @@ public class Vector extends Point {
      * @return scalar value of the dot product
      */
     public double dotProduct(Vector other) {
-        return _xyz._d1 * other._xyz._d1 + _xyz._d2 * other._xyz._d2 + _xyz._d3 * other._xyz._d3;
+        return _xyz._d1 * other._xyz._d1 +
+                _xyz._d2 * other._xyz._d2 +
+                _xyz._d3 * other._xyz._d3;
     }
 
     /**

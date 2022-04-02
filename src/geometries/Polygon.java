@@ -1,11 +1,10 @@
-package geometrries;
+package geometries;
 
 import static primitives.Util.isZero;
 
 import java.util.List;
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
+import static primitives.Util.*;
 
 /**
  * Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
@@ -100,8 +99,43 @@ public class Polygon implements Geometry {
         return _plane.getNormal();
     }
 
+    /**
+     * findIntersections find intersections between the polygon to ray
+     * @param ray The Ray to intersect
+     * @return list of point that intersections between the polygon to ray
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
-        return null;
+
+        List<Point> result = _plane.findIntersections(ray);// list of intersections point between ray to plane
+
+        if (result == null) {return null;}//if have no intersections
+
+        Point P0 = ray.getP0();//get the point start ray
+        Vector v = ray.getDir();//get the dir of ray
+
+        Point P1 = vertices.get(1);
+        Point P2 = vertices.get(0);
+
+        Vector v1 = P1.subtract(P0);
+        Vector v2 = P2.subtract(P0);
+
+        double sign = alignZero(v.dotProduct(v1.crossProduct(v2)));
+
+        if (isZero(sign)) {return null;}
+
+        boolean positive = sign > 0;
+
+        //iterate through all vertices of the polygon
+        for (int i = vertices.size() - 1; i > 0; --i) {
+            v1 = v2;
+            v2 = vertices.get(i).subtract(P0);
+
+            sign = alignZero(v.dotProduct(v1.crossProduct(v2)));
+            if (isZero(sign)) {return null;}
+            if (positive != (sign > 0)) {return null;}
+        }
+
+        return result;
     }
 }

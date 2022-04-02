@@ -1,4 +1,4 @@
-package geometrries;
+package geometries;
 
 
 import static primitives.Util.isZero;
@@ -12,7 +12,7 @@ import primitives.Vector;
 public class Tube implements Geometry {
 
     protected final Ray _ray;
-    protected final double _radius;
+     final double _radius;
 
     /**
      * Constructor
@@ -24,10 +24,18 @@ public class Tube implements Geometry {
         _ray = ray;
     }
 
+    /**
+     * get Radius
+     * @return Radius
+     */
     public double getRadius() {
         return _radius;
     }
 
+    /**
+     * get Ray
+     * @return Ray
+     */
     public Ray getRay() {
         return _ray;
     }
@@ -54,10 +62,6 @@ public class Tube implements Geometry {
 
                 double w = v.dotProduct(p0_p);
 
-                if (isZero(w)) {
-                    return p0_p;
-                }
-
                 Point startP = p0.add(v.scale(w));
                 Vector n = point.subtract(startP);
                 return n.normalize();
@@ -65,6 +69,11 @@ public class Tube implements Geometry {
         }
     }
 
+    /**
+     * findIntersections find intersections between the tube to ray
+     * @param ray The Ray to intersect
+     * @return list of point that intersections between the tube to ray
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
         return null;

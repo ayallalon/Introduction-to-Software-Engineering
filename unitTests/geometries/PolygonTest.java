@@ -1,4 +1,4 @@
-package geometrries;
+package geometries;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -92,4 +92,5 @@ class PolygonTest {
         assertEquals(new primitives.Vector(sqrt3, sqrt3, sqrt3),
                      pl.getNormal(new primitives.Point(0, 0, 1)), "Bad normal to triangle");
     }
+
 }

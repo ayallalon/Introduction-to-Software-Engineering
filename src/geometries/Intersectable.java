@@ -1,4 +1,4 @@
-package geometrries;
+package geometries;
 
 import java.util.List;
 import primitives.Point;

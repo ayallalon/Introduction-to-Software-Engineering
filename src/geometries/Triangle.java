@@ -1,7 +1,9 @@
-package geometrries;
+package geometries;
 
 import primitives.Point;
 import primitives.Vector;
+
+import java.util.List;
 
 public class Triangle extends Polygon {
 
@@ -38,8 +40,13 @@ public class Triangle extends Polygon {
         return super.getNormal(point);
     }
 
+    /**
+     * findIntersections find intersections between the triangle to ray
+     * @param ray The Ray to intersect
+     * @return list of point that intersections between the triangle to ray
+     */
     @Override
     public java.util.List<primitives.Point> findIntersections(primitives.Ray ray) {
-        return null;
+        return super.findIntersections(ray);
     }
 }

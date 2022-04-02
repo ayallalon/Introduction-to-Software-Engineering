@@ -100,8 +100,16 @@ public class Vector extends Point {
         return new Vector(_xyz.add(vector._xyz));
     }
 
+    /**
+     * normalize
+     * @return normal vector
+     */
     public Vector normalize() {
-        Double len = length();
-        return new Vector(_xyz.reduce(len));
+        double len = length();
+        if(len == 0)
+            throw new ArithmeticException("Divide by zero!");
+        return new Vector(_xyz.reduce((len)));
+        //Double len = length();
+        //return new Vector(_xyz.reduce(len));
     }
 }

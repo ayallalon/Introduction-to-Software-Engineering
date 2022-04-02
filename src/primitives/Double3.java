@@ -15,7 +15,7 @@ public class Double3 {
     /**
      * Zero triad (0,0,0)
      */
-    static final Double3 ZERO = new Double3(0, 0, 0);
+    public static Double3 ZERO = new Double3(0, 0, 0);
     public final double _d1;
     public final double _d2;
     public final double _d3;

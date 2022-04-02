@@ -2,6 +2,8 @@ package primitives;
 
 import java.util.Objects;
 
+import static primitives.Util.isZero;
+
 public class Ray {
     private final Point _p0;
     private final Vector _dir;
@@ -14,10 +16,28 @@ public class Ray {
         this._dir = dir;
     }
 
+    /**
+     * get P0
+     * @return P0
+     */
     public Point getP0() {
         return _p0;
     }
 
+    /**
+     * get Point
+     * @param delta
+     * @return p0 + delta
+     */
+    public Point getPoint(double delta ){
+        if (isZero(delta)){return  _p0;}
+        return _p0.add(_dir.scale(delta));
+    }
+
+    /**
+     * get Dir
+     * @return Dir
+     */
     public Vector getDir() {
         return _dir;
     }

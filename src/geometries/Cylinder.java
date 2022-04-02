@@ -1,4 +1,4 @@
-package geometrries;
+package geometries;
 
 import primitives.Ray;
 

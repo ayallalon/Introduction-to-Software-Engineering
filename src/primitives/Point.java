@@ -34,11 +34,11 @@ public class Point {
     }
 
     public double getX() {
-        return _xyz._d1;
+        return _xyz.d1;
     }
 
     public double getY() {
-        return _xyz._d2;
+        return _xyz.d2;
     }
 
     @Override
@@ -90,16 +90,16 @@ public class Point {
      * @return distance Squared of two point
      */
     public double distanceSquared(Point other) {
-        double x1 = _xyz._d1;
-        double y1 = _xyz._d1;
-        double z1 = _xyz._d1;
+        double x1 = _xyz.d1;
+        double y1 = _xyz.d1;
+        double z1 = _xyz.d1;
 
-        double x2 = other._xyz._d1;
-        double y2 = other._xyz._d1;
-        double z2 = other._xyz._d1;
+        double x2 = other._xyz.d1;
+        double y2 = other._xyz.d1;
+        double z2 = other._xyz.d1;
         return ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1));
     }
-  
+
 
     /**
      * Calculate the distance of two point

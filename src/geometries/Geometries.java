@@ -1,39 +1,36 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Ray;
-
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import primitives.Point;
+import primitives.Ray;
 
-public class Geometries implements Intersectable  {
+public class Geometries implements Intersectable {
 
-    protected List<Intersectable> _intersectList;
+    protected List<Intersectable> intersectList;
 
 
     /**
      * Default constructor
      */
-    public Geometries(){
-        _intersectList = new LinkedList<>();
+    public Geometries() {
+        intersectList = new LinkedList<>();
     }
 
     /**
      * Initialize the geometries based on the geometries received
-     * @param geometries
      */
     public Geometries(Intersectable... geometries) {
-        _intersectList = new LinkedList<>();
+        intersectList = new LinkedList<>();
         add(geometries);
     }
 
     /**
      * Add new geometries
-     * @param geometries
      */
-    public void add(Intersectable... geometries){
-        Collections.addAll(_intersectList, geometries);
+    public void add(Intersectable... geometries) {
+        Collections.addAll(intersectList, geometries);
     }
 
     /**
@@ -43,13 +40,15 @@ public class Geometries implements Intersectable  {
      */
     @Override
     public List<Point> findIntersections(Ray ray) {
-        if (_intersectList.isEmpty()) return null; // if have no intersections
+        if (intersectList.isEmpty()) {
+            return null; // if have no intersections
+        }
         List<Point> result = null;
-        for (var item: _intersectList) { //for all geometries in the list
+        for (var item : intersectList) { //for all geometries in the list
             List<Point> itemList = item.findIntersections(ray);
-            if(itemList!=null) {
-                if(result==null) {
-                    result=new LinkedList<Point>();
+            if (itemList != null) {
+                if (result == null) {
+                    result = new LinkedList<Point>();
                 }
                 result.addAll(itemList);
             }

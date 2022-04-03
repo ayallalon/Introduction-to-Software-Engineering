@@ -1,0 +1,32 @@
+package elements;
+
+import primitives.Color;
+import primitives.Double3;
+
+/**
+ * AmbientLight for all 3D objects
+ */
+public class AmbientLight {
+
+    private final Color intensity;
+
+    /**
+     * Constructor
+     * @param Ia illumination color of light
+     * @param Ka attenuation factor
+     */
+    public AmbientLight(Color Ia, Double3 Ka) {
+        intensity = Ia.scale(Ka);
+    }
+
+    /**
+     * Default constructor
+     */
+    public AmbientLight() {
+        intensity = Color.BLACK;
+    }
+
+    public Color getIntensity() {
+        return intensity;
+    }
+}

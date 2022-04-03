@@ -27,9 +27,9 @@ public class Vector extends Point {
      * @return length Squared of vector
      */
     public double lengthSquared() {
-        return _xyz._d1 * _xyz._d1 +
-                _xyz._d2 * _xyz._d2 +
-                _xyz._d3 * _xyz._d3;
+        return _xyz.d1 * _xyz.d1 +
+               _xyz.d2 * _xyz.d2 +
+               _xyz.d3 * _xyz.d3;
     }
 
     /**
@@ -45,9 +45,9 @@ public class Vector extends Point {
      * @return scalar value of the dot product
      */
     public double dotProduct(Vector other) {
-        return _xyz._d1 * other._xyz._d1 +
-                _xyz._d2 * other._xyz._d2 +
-                _xyz._d3 * other._xyz._d3;
+        return _xyz.d1 * other._xyz.d1 +
+               _xyz.d2 * other._xyz.d2 +
+               _xyz.d3 * other._xyz.d3;
     }
 
     /**
@@ -57,13 +57,13 @@ public class Vector extends Point {
      *     link cuemath.com/geometry/cross-product/
      */
     public Vector crossProduct(Vector other) {
-        double ax = _xyz._d1;
-        double ay = _xyz._d2;
-        double az = _xyz._d3;
+        double ax = _xyz.d1;
+        double ay = _xyz.d2;
+        double az = _xyz.d3;
 
-        double bx = other._xyz._d1;
-        double by = other._xyz._d2;
-        double bz = other._xyz._d3;
+        double bx = other._xyz.d1;
+        double by = other._xyz.d2;
+        double bz = other._xyz.d3;
 
         double cx = ay * bz - az * by;
         double cy = -(ax * bz - az * bx);
@@ -110,8 +110,9 @@ public class Vector extends Point {
      */
     public Vector normalize() {
         double len = length();
-        if(len == 0)
+        if (len == 0) {
             throw new ArithmeticException("Divide by zero!");
+        }
         return new Vector(_xyz.reduce((len)));
         //Double len = length();
         //return new Vector(_xyz.reduce(len));

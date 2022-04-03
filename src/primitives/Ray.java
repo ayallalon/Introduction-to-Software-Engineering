@@ -1,8 +1,9 @@
 package primitives;
 
-import java.util.Objects;
-
 import static primitives.Util.isZero;
+
+import java.util.List;
+import java.util.Objects;
 
 public class Ray {
     private final Point _p0;
@@ -26,11 +27,12 @@ public class Ray {
 
     /**
      * get Point
-     * @param delta
      * @return p0 + delta
      */
-    public Point getPoint(double delta ){
-        if (isZero(delta)){return  _p0;}
+    public Point getPoint(double delta) {
+        if (isZero(delta)) {
+            return _p0;
+        }
         return _p0.add(_dir.normalize().scale(delta));
     }
 
@@ -64,5 +66,26 @@ public class Ray {
         return "Ray : " +
                "p0=" + _p0 +
                ", direction=" + _dir;
+    }
+
+    public Point findClosestPoint(List<Point> pointList) {
+        //the list is empty
+        if (pointList == null) {
+            return null;
+        }
+        
+        double minDistance = Double.MAX_EXPONENT;
+        double pointDistance;
+
+        Point closestPoint = null;
+
+        for (Point point : pointList) {
+            pointDistance = point.distanceSquared(_p0);
+            if (pointDistance < minDistance) {
+                minDistance = pointDistance;
+                closestPoint = point;
+            }
+        }
+        return closestPoint;
     }
 }

@@ -19,13 +19,13 @@ class TriangleTest {
 
 
         Triangle triangle = new Triangle(new Point(0, 0, 1), new Point(1, 0, 0),
-                                    new Point(-1, 0, 0));
+                                         new Point(-1, 0, 0));
 
         // ============ Equivalence Partitions Tests ==============
         // TC01: Ray's line intersects inside Triangle (1 points)
-        //  assertEquals(List.of(new GeoPoint(tri, new Point(0, 0, 0.5))),
         assertEquals(List.of(new Point(0, 0, 0.5)),
-                triangle.findIntersections(new Ray(new Point(0, 2, 0.5), new Vector(0, -1, 0))),
+                     triangle.findIntersections(
+                         new Ray(new Point(0, 2, 0.5), new Vector(0, -1, 0))),
                      "Ray intersects triangle - should return one point");
 
 
@@ -42,8 +42,9 @@ class TriangleTest {
         // =============== Boundary Values Tests ==================
 
         // TC04: Ray's line intersects Triangle's edge  (0 points)
-        assertNull(triangle.findIntersections((new Ray(new Point(0.5, -2, 0), new Vector(0, 1, 0)))),
-                   "Ray's line intersects Triangle's edge - should return null");
+        assertNull(
+            triangle.findIntersections((new Ray(new Point(0.5, -2, 0), new Vector(0, 1, 0)))),
+            "Ray's line intersects Triangle's edge - should return null");
 
         // TC05: Ray's line intersects Triangle's vertex  (0 points)
         assertNull(triangle.findIntersections((new Ray(new Point(1, -1, 0), new Vector(0, 1, 0))))

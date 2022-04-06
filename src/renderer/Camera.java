@@ -1,16 +1,18 @@
 package renderer;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
+import java.util.MissingResourceException;
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
 /**
- * camera prodacting rays thtough a view plane
+ * camera protracting rays thought a view plane
  */
 public class Camera {
-
 
     private final Point p0;//camera eye
     private final Vector vTo; //vector pointing towards the scene
@@ -19,6 +21,9 @@ public class Camera {
     private double distance;
     private double width; // width for view plane
     private double height;// height for view plane
+
+    private ImageWriter imageWriter;
+    private RayTracer rayTracer;
 
     /**
      * constructor
@@ -70,17 +75,16 @@ public class Camera {
         Point Pc = p0.add(vTo.scale(distance));
 
         //Ratio (pixel width and height)
-
-        double Ry = height / Ny;
-        double Rx = width / Nx;
+        double Ry = alignZero(height / Ny);
+        double Rx = alignZero(width / Nx);
 
         //pixel [i, j] center
         Point Pij = Pc;
 
         //delta values for going to pixel[i,j] from pc.
 
-        double yI = -(i - (Ny - 1) / 2d) * Ry;
-        double xJ = (j - (Nx - 1) / 2d) * Rx;
+        double yI = alignZero(-(i - (Ny - 1) / 2d) * Ry);
+        double xJ = alignZero((j - (Nx - 1) / 2d) * Rx);
 
         if (!isZero(xJ)) {
             Pij = Pij.add(vRight.scale(xJ));
@@ -90,6 +94,92 @@ public class Camera {
         }
 
         return new Ray(p0, Pij.subtract(p0));
+    }
+
+    /**
+     * set ImageWriter
+     * @param imageWriter
+     * @return imageWriter
+     */
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
+    }
+
+    /**
+     * set RayTracer
+     * @param rayTracer
+     * @return RayTracer
+     */
+    public Camera setRayTracer(RayTracer rayTracer) {
+        this.rayTracer = rayTracer;
+        return this;
+    }
+
+    /**
+     * Function writeToImage produces unoptimized png file of the image according to
+     * pixel color matrix in the directory of the project
+     */
+    public void writeToImage() {
+        if (imageWriter == null) {
+            throw new MissingResourceException("missing imagewriter", "Camera", "in print Grid");
+        }
+        imageWriter.writeToImage();
+    }
+
+    /**
+     * paints the image as a grid according to the wanted interval and color of grid lines
+     * @param interval length of wanted interval
+     * @param color wanted color for grid lines
+     */
+    public void printGrid(int interval, Color color) {
+
+        if (imageWriter == null) {
+            throw new MissingResourceException("missing imagewriter", "Camera", "in print Grid");
+        }
+
+        for (int i = 0; i < imageWriter.getNx(); i++) {
+            for (int j = 0; j < imageWriter.getNy(); j++) {
+                if (i % interval == 0 || j % interval == 0) {
+                    imageWriter.writePixel(i, j, color);
+                }
+            }
+            imageWriter.writeToImage();
+        }
+    }
+
+
+    /**
+     * The actual rendering function , according to data received from the ray tracer - colours each
+     * pixel appropriately thus
+     * rendering the image
+     */
+    public void renderImage() {
+        try {
+            if (imageWriter == null) {
+                throw new MissingResourceException("missing resource", ImageWriter.class.getName(),
+                                                   "");
+            }
+            if (rayTracer == null) {
+                throw new MissingResourceException("missing resource", RayTracer.class.getName(),
+                                                   "");
+            }
+
+            //rendering the image
+            int nX = imageWriter.getNx();
+            int nY = imageWriter.getNy();
+            Ray ray;
+            Color pixelColor;
+            for (int i = 0; i < nX; i++) {
+                for (int j = 0; j < nY; j++) {
+                    ray = constructRay(nX, nY, i, j);
+                    pixelColor = rayTracer.traceRay(ray);
+                    imageWriter.writePixel(i, j, pixelColor);
+                }
+            }
+        } catch (MissingResourceException e) {
+            throw new UnsupportedOperationException("Not implemented yet" + e.getClassName());
+        }
     }
 }
 

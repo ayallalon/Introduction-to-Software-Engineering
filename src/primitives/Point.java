@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class Point {
 
+    public static final Point ZERO = new Point(0d, 0d, 0d);
     protected final Double3 xyz;
 
     /**
@@ -33,18 +34,10 @@ public class Point {
         return xyz;
     }
 
-    /**
-     * get X
-     * @return X
-     */
     public double getX() {
         return xyz.d1;
     }
 
-    /**
-     * get Y
-     * @return Y
-     */
     public double getY() {
         return xyz.d2;
     }

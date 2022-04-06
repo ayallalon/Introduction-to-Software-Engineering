@@ -68,25 +68,26 @@ public class Ray {
                ", direction=" + dir;
     }
 
+
     /**
-     * find The Closest Point
-     * @param pointList -> list of all point that intersection with ray
-     * @return the closest point
+     * Calculator the closes point to the ray
+     * @param pointList list of point that intersection with ray
+     * @return the closes poin
      */
     public Point findClosestPoint(List<Point> pointList) {
         //the list is empty
-        if (pointList == null) {    // if it has no intersection
+        if (pointList == null) {
             return null;
         }
-        
-        double minDistance = Double.MAX_EXPONENT; // the min distance
+
+        double minDistance = Double.MAX_EXPONENT;
         double pointDistance;
 
         Point closestPoint = null;
 
-        for (Point point : pointList) { //for all point in the list
+        for (Point point : pointList) {
             pointDistance = point.distanceSquared(p0);
-            if (pointDistance < minDistance) { //if its closes more the minDistance point
+            if (pointDistance < minDistance) {
                 minDistance = pointDistance;
                 closestPoint = point;
             }

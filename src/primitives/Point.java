@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class Point {
 
+    public static final Point ZERO = new Point(0d, 0d, 0d);
     protected final Double3 _xyz;
 
     /**

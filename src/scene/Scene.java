@@ -1,7 +1,7 @@
 package scene;
 
-import elements.AmbientLight;
 import geometries.Geometries;
+import lighting.AmbientLight;
 import primitives.Color;
 
 public class Scene {
@@ -60,9 +60,9 @@ public class Scene {
             return this;
         }
 
-        public Scene Build() {
+
+        public Scene build() {
             Scene scene = new Scene(this);
-            //...
             return scene;
         }
     }

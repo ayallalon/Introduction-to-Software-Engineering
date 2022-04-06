@@ -68,12 +68,17 @@ public class Ray {
                ", direction=" + _dir;
     }
 
+    /**
+     * Calculator the closes point to the ray
+     * @param pointList list of point that intersection with ray
+     * @return the closes point
+     */
     public Point findClosestPoint(List<Point> pointList) {
         //the list is empty
         if (pointList == null) {
             return null;
         }
-        
+
         double minDistance = Double.MAX_EXPONENT;
         double pointDistance;
 

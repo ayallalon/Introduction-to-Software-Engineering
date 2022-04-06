@@ -26,7 +26,7 @@ public class Triangle extends Polygon {
     public String toString() {
         return "Triangle{" +
                "vertices=" + vertices +
-               ", plane=" + _plane +
+               ", plane=" + plane +
                '}';
     }
 
@@ -47,7 +47,7 @@ public class Triangle extends Polygon {
     @Override
     public java.util.List<primitives.Point> findIntersections(primitives.Ray ray) {
 
-        List<Point> result = _plane.findIntersections(ray);
+        List<Point> result = plane.findIntersections(ray);
         if (result == null) {
             return null;
         }

@@ -10,8 +10,8 @@ import static primitives.Util.alignZero;
 
 public class Sphere implements Geometry {
 
-    /*private*/ final Point _center;
-    /*private*/ final double _radius;
+    /*private*/ final Point center; //center of the sphere
+    /*private*/ final double radius; //radius of sphere
 
     /**
      * Constructor
@@ -19,8 +19,8 @@ public class Sphere implements Geometry {
      * @param radius type double
      */
     public Sphere(Point center, double radius) {
-        _center = center;
-        _radius = radius;
+        this.center = center;
+        this.radius = radius;
     }
 
     /**
@@ -28,7 +28,7 @@ public class Sphere implements Geometry {
      * @return Center
      */
     public Point getCenter() {
-        return _center;
+        return center;
     }
 
     /**
@@ -36,7 +36,7 @@ public class Sphere implements Geometry {
      * @return Radius
      */
     public double getRadius() {
-        return _radius;
+        return radius;
     }
 
     /**
@@ -44,7 +44,7 @@ public class Sphere implements Geometry {
      */
     @Override
     public String toString() {
-        return "Sphere : " + "center=" + _center + ", radius=" + _radius;
+        return "Sphere : " + "center=" + center + ", radius=" + radius;
     }
 
 
@@ -60,7 +60,7 @@ public class Sphere implements Geometry {
          */
         /*Vector n = point.subtract(_center);
         return n.normalize();*/
-        return point.subtract(_center).normalize();
+        return point.subtract(center).normalize();
     }
 
     /**
@@ -73,20 +73,20 @@ public class Sphere implements Geometry {
         Point P0 = ray.getP0();        //get point of start ray
         Vector v = ray.getDir();      //get dir of ray
 
-        if (P0.equals(_center)) {    //if start of ray equal to the sphere's center
-            return List.of(_center.add(v.scale(_radius)));
+        if (P0.equals(center)) {    //if start of ray equal to the sphere's center
+            return List.of(center.add(v.scale(radius)));
         }
 
-        Vector U = _center.subtract(P0);
+        Vector U = center.subtract(P0);
 
         double tm = alignZero(v.dotProduct(U));
         double d = alignZero(Math.sqrt(U.lengthSquared() - tm * tm));
         // no intersections : the ray direction is above the sphere
-        if (d >= _radius) {
+        if (d >= radius) {
             return null;
         }
 
-        double th = alignZero(Math.sqrt(_radius * _radius - d * d));
+        double th = alignZero(Math.sqrt(radius * radius - d * d));
         double t1 = alignZero(tm - th);
         double t2 = alignZero(tm + th);
 

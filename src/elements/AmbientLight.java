@@ -6,7 +6,7 @@ import primitives.Double3;
 /**
  * AmbientLight for all 3D objects
  */
-public class AmbientLight {
+public class   AmbientLight {
 
     private final Color intensity;
 
@@ -26,6 +26,10 @@ public class AmbientLight {
         intensity = Color.BLACK;
     }
 
+    /**
+     * get Intensity -> reset intensity
+     * @return intensity
+     */
     public Color getIntensity() {
         return intensity;
     }

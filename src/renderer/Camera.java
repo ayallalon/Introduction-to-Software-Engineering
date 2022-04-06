@@ -12,34 +12,50 @@ import primitives.Vector;
 public class Camera {
 
 
-    private final Point _p0;//camera eye
-    private final Vector _vTo; //vector pointing towards the scene
-    private final Vector _vUp; //vector pointing upwards
-    private final Vector _vRight; //vector pointing towards the right
-    private double _distance;
-    private double _width;
-    private double _height;
+    private final Point p0;//camera eye
+    private final Vector vTo; //vector pointing towards the scene
+    private final Vector vUp; //vector pointing upwards
+    private final Vector vRight; //vector pointing towards the right
+    private double distance;
+    private double width; // width for view plane
+    private double height;// height for view plane
 
-
+    /**
+     * constructor
+     * @param p0 center of the camera
+     * @param vTo dir camera
+     * @param vUp Camera location
+     */
     public Camera(Point p0, Vector vTo, Vector vUp) {
         if (!isZero(vUp.dotProduct(vTo))) {
             throw new IllegalArgumentException("vTo and vUp should be orthogonal.");
         }
-        _p0 = p0;
-        _vTo = vTo.normalize();
-        _vUp = vUp.normalize();
+        this.p0 = p0;
+        this.vTo = vTo.normalize();
+        this.vUp = vUp.normalize();
 
-        _vRight = _vTo.crossProduct(_vUp);
+        vRight = this.vTo.crossProduct(this.vUp);
     }
 
+    /**
+     * set view plane Distance
+     * @param distance
+     * @return the distance
+     */
     public Camera setVPDistance(double distance) {
-        _distance = distance;
+        this.distance = distance;
         return this;
     }
 
+    /**
+     * set view plane Size
+     * @param width for view plane
+     * @param height for view plane
+     * @return width and height
+     */
     public Camera setVPSize(double width, double height) {
-        _width = width;
-        _height = height;
+        this.width = width;
+        this.height = height;
         return this;
     }
 
@@ -51,12 +67,12 @@ public class Camera {
      */
     public Ray constructRay(int Nx, int Ny, int j, int i) {
         //image center
-        Point Pc = _p0.add(_vTo.scale(_distance));
+        Point Pc = p0.add(vTo.scale(distance));
 
         //Ratio (pixel width and height)
 
-        double Ry = _height / Ny;
-        double Rx = _width / Nx;
+        double Ry = height / Ny;
+        double Rx = width / Nx;
 
         //pixel [i, j] center
         Point Pij = Pc;
@@ -67,13 +83,13 @@ public class Camera {
         double xJ = (j - (Nx - 1) / 2d) * Rx;
 
         if (!isZero(xJ)) {
-            Pij = Pij.add(_vRight.scale(xJ));
+            Pij = Pij.add(vRight.scale(xJ));
         }
         if (!isZero(yI)) {
-            Pij = Pij.add(_vUp.scale(yI));
+            Pij = Pij.add(vUp.scale(yI));
         }
 
-        return new Ray(_p0, Pij.subtract(_p0));
+        return new Ray(p0, Pij.subtract(p0));
     }
 }
 

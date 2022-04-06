@@ -1,8 +1,6 @@
 package geometries;
 
 
-import static primitives.Util.isZero;
-
 import java.util.List;
 import primitives.Point;
 import primitives.Ray;
@@ -11,8 +9,8 @@ import primitives.Vector;
 
 public class Tube implements Geometry {
 
-    protected final Ray _ray;
-     final double _radius;
+    protected final Ray ray; //dur for tube
+     final double radius; // radius for tube
 
     /**
      * Constructor
@@ -20,8 +18,8 @@ public class Tube implements Geometry {
      * @param ray type ray
      */
     public Tube(double radius, Ray ray) {
-        _radius = radius;
-        _ray = ray;
+        this.radius = radius;
+        this.ray = ray;
     }
 
     /**
@@ -29,7 +27,7 @@ public class Tube implements Geometry {
      * @return Radius
      */
     public double getRadius() {
-        return _radius;
+        return radius;
     }
 
     /**
@@ -37,7 +35,7 @@ public class Tube implements Geometry {
      * @return Ray
      */
     public Ray getRay() {
-        return _ray;
+        return ray;
     }
 
 
@@ -46,7 +44,7 @@ public class Tube implements Geometry {
      */
     @Override
     public String toString() {
-        return "Tube{" + "radius=" + _radius + ", ray=" + _ray + '}';
+        return "Tube{" + "radius=" + radius + ", ray=" + ray + '}';
     }
 
     /**
@@ -56,8 +54,8 @@ public class Tube implements Geometry {
     public primitives.Vector getNormal(Point point) {
         {
             {
-                Point p0 = _ray.getP0();
-                Vector v = _ray.getDir();
+                Point p0 = ray.getP0();
+                Vector v = ray.getDir();
                 Vector p0_p = point.subtract(p0);
 
                 double w = v.dotProduct(p0_p);

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class RayTest {
+class  RayTest {
 
     @Test
     void testFindClosestPoint() {

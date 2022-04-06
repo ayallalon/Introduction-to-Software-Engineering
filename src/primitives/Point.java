@@ -5,13 +5,13 @@ import java.util.Objects;
 
 public class Point {
 
-    protected final Double3 _xyz;
+    protected final Double3 xyz;
 
     /**
      * Constructor
      */
     public Point(Double3 xyz) {
-        _xyz = xyz;
+        this.xyz = xyz;
     }
 
     /**
@@ -21,7 +21,7 @@ public class Point {
      * @param z coordinate value for z axis
      */
     public Point(double x, double y, double z) {
-        _xyz = new Double3(x, y, z);
+        xyz = new Double3(x, y, z);
         //
         // this(new Double3(x,y,z));
     }
@@ -30,20 +30,28 @@ public class Point {
      * @return point xyz
      */
     public Double3 getXyz() {
-        return _xyz;
+        return xyz;
     }
 
+    /**
+     * get X
+     * @return X
+     */
     public double getX() {
-        return _xyz.d1;
+        return xyz.d1;
     }
 
+    /**
+     * get Y
+     * @return Y
+     */
     public double getY() {
-        return _xyz.d2;
+        return xyz.d2;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(_xyz);
+        return Objects.hash(xyz);
     }
 
     @Override
@@ -55,12 +63,12 @@ public class Point {
             return false;
         }
         Point point = (Point)o;
-        return _xyz.equals(point._xyz);
+        return xyz.equals(point.xyz);
     }
 
     @Override
     public String toString() {
-        return "Point : " + "_xyz=" + _xyz;
+        return "Point : " + "_xyz=" + xyz;
     }
 
 
@@ -71,7 +79,7 @@ public class Point {
      * @return result of add
      */
     public Point add(Vector vector) {
-        return new Point(_xyz.add(vector._xyz));
+        return new Point(xyz.add(vector.xyz));
     }
 
 
@@ -82,7 +90,7 @@ public class Point {
      * @return result of subtract
      */
     public Vector subtract(Point p1) {
-        return new Vector(_xyz.subtract(p1._xyz));
+        return new Vector(xyz.subtract(p1.xyz));
     }
 
     /**
@@ -90,13 +98,13 @@ public class Point {
      * @return distance Squared of two point
      */
     public double distanceSquared(Point other) {
-        double x1 = _xyz.d1;
-        double y1 = _xyz.d1;
-        double z1 = _xyz.d1;
+        double x1 = xyz.d1;
+        double y1 = xyz.d1;
+        double z1 = xyz.d1;
 
-        double x2 = other._xyz.d1;
-        double y2 = other._xyz.d1;
-        double z2 = other._xyz.d1;
+        double x2 = other.xyz.d1;
+        double y2 = other.xyz.d1;
+        double z2 = other.xyz.d1;
         return ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1));
     }
 

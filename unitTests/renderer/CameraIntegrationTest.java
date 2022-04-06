@@ -19,7 +19,7 @@ public class CameraIntegrationTest {
      */
 
 
-    //create camera
+    //create camera's
     Camera camera1 = new Camera(new Point(0, 0, 0), new Vector(0, 0, -1), new Vector(0, 1, 0))
         .setVPSize(3, 3)
         .setVPDistance(1);
@@ -75,6 +75,9 @@ public class CameraIntegrationTest {
     }
 
 
+    /**
+     * test for IntegrationCameraPlane
+     */
     @Test
     void testIntegrationCameraPlane() {
         // TC01: The plane is against camera => 9 points

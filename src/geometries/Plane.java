@@ -9,8 +9,8 @@ import static primitives.Util.*;
 public class Plane implements Geometry {
 
 
-    private final Point _q0;
-    private final Vector _normal;
+    private final Point q0;
+    private final Vector normal;
 
     /**
      * Constructor
@@ -18,19 +18,19 @@ public class Plane implements Geometry {
      * @param normal type vector
      */
     public Plane(Point q0, Vector normal) {
-        _q0 = q0;
-        _normal = normal.normalize();
+        this.q0 = q0;
+        this.normal = normal.normalize();
     }
 
     /**
      * Another constructor
      */
     public Plane(Point q0, Point q1, Point q2) {
-        _q0 = q0;
+        this.q0 = q0;
         Vector u = q1.subtract(q0);
         Vector v = q2.subtract(q0);
         Vector n = u.crossProduct(v);
-        _normal = n.normalize();
+        normal = n.normalize();
     }
 
     /**
@@ -38,7 +38,7 @@ public class Plane implements Geometry {
      * @return q0
      */
     public Point getQ0() {
-        return _q0;
+        return q0;
     }
 
     /**
@@ -47,7 +47,7 @@ public class Plane implements Geometry {
      */
     @Deprecated
     public Vector getNormal() {
-        return _normal;
+        return normal;
     }
 
 
@@ -56,7 +56,7 @@ public class Plane implements Geometry {
      */
     @Override
     public String toString() {
-        return "Plane : " + "point=" + _q0 + ", normal=" + _normal;
+        return "Plane : " + "point=" + q0 + ", normal=" + normal;
     }
 
     /**
@@ -79,12 +79,12 @@ public class Plane implements Geometry {
 
         Point P0 = ray.getP0();
         Vector v = ray.getDir();
-        Vector n = _normal;
+        Vector n = normal;
 
-        if (_q0.equals(P0)) {//if start of ray equal to q0
+        if (q0.equals(P0)) {//if start of ray equal to q0
             return null;
         }
-        Vector P0_Q0 = _q0.subtract(P0);
+        Vector P0_Q0 = q0.subtract(P0);
         //numerator
         double nP0Q0 = alignZero(n.dotProduct(P0_Q0));
         if (isZero(nP0Q0)) {

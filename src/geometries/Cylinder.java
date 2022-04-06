@@ -7,7 +7,7 @@ import primitives.Ray;
  */
 public class Cylinder extends Tube {
 
-    private final double _height;
+    private final double height;
 
     /**
      * constructor
@@ -17,7 +17,7 @@ public class Cylinder extends Tube {
      */
     public Cylinder(double radius, Ray ray, double height) {
         super(radius, ray);
-        this._height = height;
+        this.height = height;
     }
 
     /**
@@ -25,7 +25,7 @@ public class Cylinder extends Tube {
      * @return height
      */
     public double getHeight() {
-        return _height;
+        return height;
     }
 
     /**
@@ -34,8 +34,8 @@ public class Cylinder extends Tube {
     @Override
     public String toString() {
         return "Cylinder : " +
-               "height=" + _height +
-               ", radius=" + _radius +
-               ", ray=" + _ray;
+               "height=" + height +
+               ", radius=" + radius +
+               ", ray=" + ray;
     }
 }

@@ -18,7 +18,7 @@ public class Vector extends Point {
      */
     public Vector(Double3 xyz) {
         super(xyz);
-        if (_xyz.equals(Double3.ZERO)) {
+        if (this.xyz.equals(Double3.ZERO)) {
             throw new IllegalArgumentException("Vector(0,0,0) is not allowed");
         }
     }
@@ -27,9 +27,9 @@ public class Vector extends Point {
      * @return length Squared of vector
      */
     public double lengthSquared() {
-        return _xyz.d1 * _xyz.d1 +
-               _xyz.d2 * _xyz.d2 +
-               _xyz.d3 * _xyz.d3;
+        return xyz.d1 * xyz.d1 +
+               xyz.d2 * xyz.d2 +
+               xyz.d3 * xyz.d3;
     }
 
     /**
@@ -45,9 +45,9 @@ public class Vector extends Point {
      * @return scalar value of the dot product
      */
     public double dotProduct(Vector other) {
-        return _xyz.d1 * other._xyz.d1 +
-               _xyz.d2 * other._xyz.d2 +
-               _xyz.d3 * other._xyz.d3;
+        return xyz.d1 * other.xyz.d1 +
+               xyz.d2 * other.xyz.d2 +
+               xyz.d3 * other.xyz.d3;
     }
 
     /**
@@ -57,13 +57,13 @@ public class Vector extends Point {
      *     link cuemath.com/geometry/cross-product/
      */
     public Vector crossProduct(Vector other) {
-        double ax = _xyz.d1;
-        double ay = _xyz.d2;
-        double az = _xyz.d3;
+        double ax = xyz.d1;
+        double ay = xyz.d2;
+        double az = xyz.d3;
 
-        double bx = other._xyz.d1;
-        double by = other._xyz.d2;
-        double bz = other._xyz.d3;
+        double bx = other.xyz.d1;
+        double by = other.xyz.d2;
+        double bz = other.xyz.d3;
 
         double cx = ay * bz - az * by;
         double cy = -(ax * bz - az * bx);
@@ -81,7 +81,7 @@ public class Vector extends Point {
      * @return result of scale
      */
     public Vector scale(double scalar) {
-        return new Vector(_xyz.scale(scalar));
+        return new Vector(xyz.scale(scalar));
     }
 
     @Override
@@ -101,7 +101,7 @@ public class Vector extends Point {
      * @return result of add
      */
     public Vector add(Vector vector) {
-        return new Vector(_xyz.add(vector._xyz));
+        return new Vector(xyz.add(vector.xyz));
     }
 
     /**
@@ -113,8 +113,6 @@ public class Vector extends Point {
         if (len == 0) {
             throw new ArithmeticException("Divide by zero!");
         }
-        return new Vector(_xyz.reduce((len)));
-        //Double len = length();
-        //return new Vector(_xyz.reduce(len));
+        return new Vector(xyz.reduce((len)));
     }
 }

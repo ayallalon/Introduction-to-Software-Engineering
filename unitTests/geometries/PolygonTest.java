@@ -52,7 +52,7 @@ class PolygonTest {
 
         // =============== Boundary Values Tests ==================
 
-        // TC10: Vertex on a side of a quadrangular
+        // TC5: Vertex on a side of a quadrangular
         assertThrows(IllegalArgumentException.class, //
                      () -> new Polygon(new primitives.Point(0, 0, 1),
                                        new primitives.Point(1, 0, 0),
@@ -60,7 +60,7 @@ class PolygonTest {
                                        new primitives.Point(0, 0.5, 0.5)),
                      "Constructed a polygon with vertix on a side");
 
-        // TC11: Last point = first point
+        // TC6: Last point = first point
         assertThrows(IllegalArgumentException.class, //
                      () -> new Polygon(new primitives.Point(0, 0, 1),
                                        new primitives.Point(1, 0, 0),
@@ -68,7 +68,7 @@ class PolygonTest {
                                        new primitives.Point(0, 0, 1)),
                      "Constructed a polygon with vertice on a side");
 
-        // TC12: Co-located points
+        // TC7: Co-located points
         assertThrows(IllegalArgumentException.class, //
                      () -> new Polygon(new primitives.Point(0, 0, 1),
                                        new primitives.Point(1, 0, 0),

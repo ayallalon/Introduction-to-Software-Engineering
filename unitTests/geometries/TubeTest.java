@@ -23,13 +23,14 @@ class TubeTest {
         Vector normal = tube.getNormal(new Point(0, 0.5, 2)).normalize();
 
         double dotProduct = normal.dotProduct(tube.getRay().getDir());
+        // TC02: normal is not orthogonal to the tube
         assertEquals(0d, dotProduct, "normal is not orthogonal to the tube");
 
         boolean firstnormal = new Vector(0, 0, 1).equals(normal);
         boolean secondtnormal = new Vector(0, 0, -1).equals(normal);
-
+        // TC03: Bad normal to tube
         assertTrue(firstnormal || secondtnormal, "Bad normal to tube");
-
+       // TC04: Bad normal to tube
         assertEquals(new Vector(0, 0, 1), normal, "Bad normal to tube");
 
         // =============== Boundary Values Tests ==================

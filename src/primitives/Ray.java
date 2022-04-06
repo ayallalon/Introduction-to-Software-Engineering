@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class Ray {
-    private final Point _p0;
-    private final Vector _dir;
+    private final Point p0;
+    private final Vector dir;
 
     /**
      * Constructor
      */
     public Ray(Point p0, Vector dir) {
-        this._p0 = p0;
-        this._dir = dir.normalize();
+        this.p0 = p0;
+        this.dir = dir.normalize();
     }
 
     /**
@@ -22,7 +22,7 @@ public class Ray {
      * @return P0
      */
     public Point getP0() {
-        return _p0;
+        return p0;
     }
 
     /**
@@ -31,9 +31,9 @@ public class Ray {
      */
     public Point getPoint(double delta) {
         if (isZero(delta)) {
-            return _p0;
+            return p0;
         }
-        return _p0.add(_dir.normalize().scale(delta));
+        return p0.add(dir.normalize().scale(delta));
     }
 
     /**
@@ -41,7 +41,7 @@ public class Ray {
      * @return Dir
      */
     public Vector getDir() {
-        return _dir;
+        return dir;
     }
 
     @Override
@@ -64,24 +64,29 @@ public class Ray {
     @Override
     public String toString() {
         return "Ray : " +
-               "p0=" + _p0 +
-               ", direction=" + _dir;
+               "p0=" + p0 +
+               ", direction=" + dir;
     }
 
+    /**
+     * find The Closest Point
+     * @param pointList -> list of all point that intersection with ray
+     * @return the closest point
+     */
     public Point findClosestPoint(List<Point> pointList) {
         //the list is empty
-        if (pointList == null) {
+        if (pointList == null) {    // if it has no intersection
             return null;
         }
         
-        double minDistance = Double.MAX_EXPONENT;
+        double minDistance = Double.MAX_EXPONENT; // the min distance
         double pointDistance;
 
         Point closestPoint = null;
 
-        for (Point point : pointList) {
-            pointDistance = point.distanceSquared(_p0);
-            if (pointDistance < minDistance) {
+        for (Point point : pointList) { //for all point in the list
+            pointDistance = point.distanceSquared(p0);
+            if (pointDistance < minDistance) { //if its closes more the minDistance point
                 minDistance = pointDistance;
                 closestPoint = point;
             }

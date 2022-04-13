@@ -23,7 +23,7 @@ class  RayTest {
         list.add(new Point(0.5, 0, -100));
 
         assertEquals(list.get(2), ray.findClosestPoint(list),
-                     "testFindClosestPoint => doesn't work properly");
+                "testFindClosestPoint => doesn't work properly");
 
         // =============== Boundary Values Tests ==================
 
@@ -41,7 +41,7 @@ class  RayTest {
         list3.add(new Point(0.5, 0, -100));
 
         assertEquals(list3.get(0), ray.findClosestPoint(list3),
-                     "testFindClosestPoint => doesn't work properly");
+                "testFindClosestPoint => doesn't work properly");
 
 
         // TC03: the closest pont is the last one.
@@ -53,6 +53,6 @@ class  RayTest {
         list4.add(new Point(0, 2, -10));
 
         assertEquals(list4.get(3), ray.findClosestPoint(list4),
-                     "testFindClosestPoint => doesn't work properly");
+                "testFindClosestPoint => doesn't work properly");
     }
 }

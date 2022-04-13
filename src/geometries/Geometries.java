@@ -6,7 +6,7 @@ import java.util.List;
 import primitives.Point;
 import primitives.Ray;
 
-public class Geometries implements Intersectable {
+public class Geometries extends Intersectable {
 
     protected List<Intersectable> intersectList;
 
@@ -38,17 +38,18 @@ public class Geometries implements Intersectable {
      * @param ray The Ray to intersect
      * @return list of point that intersections between the geometries to ray
      */
+
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         if (intersectList.isEmpty()) {
             return null;                                         // if have no intersections
         }
-        List<Point> result = null;
+        List<GeoPoint> result = null;
         for (var item : intersectList) {                        // for all geometries in the list
-            List<Point> itemList = item.findIntersections(ray); // find intersections
+            List<GeoPoint> itemList = item.findGeoIntersections(ray); // find intersections
             if (itemList != null) {
                 if (result == null) {
-                    result = new LinkedList<Point>();
+                    result = new LinkedList<>();
                 }
                 result.addAll(itemList);
             }

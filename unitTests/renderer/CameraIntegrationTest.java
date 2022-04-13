@@ -110,11 +110,10 @@ public class CameraIntegrationTest {
      */
     private int countIntersection(Camera camera, Geometry geometry, int nX, int nY) {
         int countIntersectionOfGeometries = 0;//count the intersection with the geometry
-        for (int i = 0; i < nX; i++) {        //row
-            for (int j = 0; j < nY; j++) {    //cow
+        for (int i = 0; i < nY; i++) {        //row
+            for (int j = 0; j < nX; j++) {    //cow
                 Ray ray = camera.constructRay(nX, nY, j, i); //create ray to pixel
-                var intersection = geometry.findIntersections(
-                    ray); // find Intersections to the geometry with the ray
+                var intersection = geometry.findIntersections(ray); // find Intersections to the geometry with the ray
                 if (intersection != null) { //if there is intersection
                     countIntersectionOfGeometries += intersection.size(); //count it
                 }

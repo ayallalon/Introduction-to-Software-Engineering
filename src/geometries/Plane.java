@@ -6,7 +6,7 @@ import primitives.Vector;
 import static primitives.Util.*;
 
 
-public class Plane implements Geometry {
+public class Plane extends Geometry {
 
 
     private final Point q0;
@@ -75,8 +75,7 @@ public class Plane implements Geometry {
      * @return list of point that intersections between the plane to ray
      */
     @Override
-    public List<Point> findIntersections(Ray ray) {
-
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Point P0 = ray.getP0();
         Vector v = ray.getDir();
         Vector n = normal;
@@ -100,8 +99,6 @@ public class Plane implements Geometry {
         if (t <= 0) {
             return null;
         }
-        Point point = P0.add(v.scale(t));
-        return List.of(point);
-
+        return List.of(new GeoPoint(this,ray.getPoint(t)));
     }
 }

@@ -8,12 +8,12 @@ import scene.Scene;
  * An abstract class for tracing the rays path through the scene
  */
 public abstract class RayTracer {
-    protected final Scene scene;
+    protected Scene scene;
 
     /**
      * constructor
      */
-    public RayTracer(Scene scene) {
+    protected RayTracer(Scene scene) {
         this.scene = scene;
     }
 
@@ -22,5 +22,7 @@ public abstract class RayTracer {
      * @param ray to consist the color
      * @return color
      */
-    public abstract Color traceRay(Ray ray);
+    abstract Color traceRay(Ray ray);
 }
+
+

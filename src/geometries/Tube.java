@@ -18,6 +18,7 @@ public class Tube extends Geometry {
      * @param ray type ray
      */
     public Tube(double radius, Ray ray) {
+        super();
         this.radius = radius;
         this.ray = ray;
     }

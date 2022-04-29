@@ -1,12 +1,11 @@
 package scene;
 
 import geometries.Geometries;
+import java.util.LinkedList;
+import java.util.List;
 import lighting.AmbientLight;
 import lighting.LightSource;
 import primitives.Color;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class Scene {
 
@@ -16,20 +15,20 @@ public class Scene {
     public final Geometries geometries;      // the geometries in the scene
     public List<LightSource> lights = new LinkedList<>();
 
-    public Scene setLight(List<LightSource> lights) {
-        this.lights = lights;
-        return this;
-    }
-
     /***
      * constructor
      * @param builder that build the scene
      */
-    private Scene(SceneBuilder builder) {
+    public Scene(SceneBuilder builder) {
         name = builder.name;
         background = builder.background;
         ambientLight = builder.ambientLight;
         geometries = builder.geometries;
+    }
+
+    public Scene setLight(List<LightSource> lights) {
+        this.lights = lights;
+        return this;
     }
 
     /**
@@ -80,7 +79,7 @@ public class Scene {
         public SceneBuilder(String name) {
             this.name = name;
         }
-       //caning methods
+        //caning methods
 
         /**
          * set AmbientLight

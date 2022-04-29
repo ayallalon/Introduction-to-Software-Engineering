@@ -2,43 +2,51 @@ package lighting;
 
 import primitives.Color;
 import primitives.Point;
+import primitives.Vector;
 
-public class PointLight extends Light{
+public class PointLight extends Light implements LightSource {
 
-    final Point Position;
-    final double kC=1;
-    final double kL=0;
-    final double kQ=0;
+    public Point position;
+    public double kC;
+    public double kL;
+    public double kQ;
 
     /**
      * constructor
-     *
-     * @param intensity
-     * @param position
      */
-    protected PointLight(Color intensity, Point position) {
+    public PointLight(Color intensity, Point position) {
         super(intensity);
-        Position = position;
+        this.position = position;
+        this.kC = 1d;
+        this.kL = 0d;
+        this.kQ = 0d;
     }
 
-    /**
-     *
-     * @return
-     */
+    public Color getIntensity(Point p) {
+        double d = p.distance(position);
+        double d2 = d * d;
+
+        double calc = (kC + d * kL + d2 * kQ);
+        return getIntensity().reduce(calc);
+    }
+
     @Override
-    public Color getIntensity() {
-        return super.getIntensity();
+    public Vector getL(Point p) {
+        return p.subtract(position).normalize();
     }
 
-    /**
-     *
-     * @param P
-     * @return
-     */
-    public Color getIntensity(Point P)
-    {
-        // but kL and Kq are 0
-        double calc=(kC+Position.distance(P))*kL+(Position.distanceSquared(P));
-        return super.getIntensity().reduce(calc);
+    public PointLight setKc(double kC) {
+        this.kC = kC;
+        return this;
+    }
+
+    public PointLight setKl(double kL) {
+        this.kL = kL;
+        return this;
+    }
+
+    public PointLight setKq(double kQ) {
+        this.kQ = kQ;
+        return this;
     }
 }

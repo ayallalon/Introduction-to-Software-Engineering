@@ -1,42 +1,51 @@
 package lighting;
 
-import primitives.*;
+import static primitives.Util.alignZero;
 
-public class SpotLight extends PointLight{
+import primitives.Color;
+import primitives.Point;
+import primitives.Vector;
 
-    /**
-     *
-     * @param intensity
-     * @param position
-     * @param direction
-     */
+public class SpotLight extends PointLight {
+
+    private Vector direction;
+
+
     public SpotLight(Color intensity, Point position, Vector direction) {
         super(intensity, position);
-        this.direction = direction;
+        this.direction = direction.normalize();
     }
 
-    Vector direction;
-
-    @Override
-    public Color getIntensity() {
-        return super.getIntensity();
+    public Color getIntensity(Point P) {
+        double projection = direction.dotProduct(getL(P));
+        if (alignZero(projection) < 0) {
+            return Color.BLACK;
+        }
+        return super.getIntensity(P).scale(projection);
     }
 
-    public Color getIntensity(Point P)
-    {
-        // but kL and Kq are 0
-        double calc=(kC+Position.distance(P))*kL+(Position.distanceSquared(P));
-        Vector l=P.subtract(Position);
-        return (super.getIntensity().scale(Math.max(0,direction.normalize().dotProduct(l))).reduce(calc));
-    }
+    /*
+        public Color getIntensity(Point P) {
+        double projection = direction.dotProduct(getL(position));
+        if (alignZero(projection) < 0)
+        {
+            return Color.BLACK;
+        }
+        Color pointIntensity = super.getIntensity(P);
+        Vector l = P.subtract(position).normalize();
 
-    public Vector getL(Point p)
-    {
-        return direction;
+        double calc = Math.max(0, direction.dotProduct(l));
+        return pointIntensity.scale(calc);
     }
+     */
 
-    private SpotLight setDirection(Vector dir){
+
+    private SpotLight setDirection(Vector dir) {
         direction = dir;
+        return this;
+    }
+
+    public PointLight setNarrowBeam(int val) {
         return this;
     }
 }

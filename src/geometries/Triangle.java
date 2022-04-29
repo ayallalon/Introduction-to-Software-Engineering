@@ -1,11 +1,11 @@
 package geometries;
 
+import static primitives.Util.isZero;
+
 import java.util.List;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-
-import static primitives.Util.isZero;
 
 public class Triangle extends Polygon {
 
@@ -28,19 +28,11 @@ public class Triangle extends Polygon {
     @Override
     public String toString() {
         return "Triangle{" +
-                "vertices=" + vertices +
-                ", plane=" + plane +
-                '}';
+               "vertices=" + vertices +
+               ", plane=" + plane +
+               '}';
     }
 
-    /**
-     * Get Normal
-     * @return normal vector from the point to the Triangle
-     */
-    @Override
-    public Vector getNormal(Point point) {
-        return super.getNormal(point);
-    }
 
     /**
      * findIntersections find intersections between the triangle to ray
@@ -65,17 +57,17 @@ public class Triangle extends Polygon {
         Vector v3 = p3.subtract(p0);//p0->p3
 
         double n1 = v.dotProduct(v1.crossProduct(v2));
-        if (isZero(n1)){
+        if (isZero(n1)) {
             return null;
         }
 
         double n2 = v.dotProduct(v2.crossProduct(v3));
-        if (isZero(n2)){
+        if (isZero(n2)) {
             return null;
         }
 
         double n3 = v.dotProduct(v3.crossProduct(v1));
-        if (isZero(n3)){
+        if (isZero(n3)) {
             return null;
         }
 
@@ -83,7 +75,6 @@ public class Triangle extends Polygon {
         if (!((n1 < 0 && n2 < 0 && n3 < 0) || (n1 > 0 && n2 > 0 && n3 > 0))) {
             return null;
         }
-        return List.of(new GeoPoint(this,result.get(0).point));
-        //return super.findGeoIntersections(ray);
+        return List.of(new GeoPoint(this, result.get(0).point));
     }
 }

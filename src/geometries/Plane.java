@@ -1,9 +1,12 @@
 package geometries;
 
-import java.util.*;
-import primitives.*;
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
+
+import java.util.List;
+import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
-import static primitives.Util.*;
 
 
 public class Plane extends Geometry {
@@ -45,7 +48,6 @@ public class Plane extends Geometry {
      * get Normal
      * @return normal
      */
-    @Deprecated
     public Vector getNormal() {
         return normal;
     }
@@ -61,7 +63,6 @@ public class Plane extends Geometry {
 
     /**
      * get Normal
-     * @param point
      * @return normal from point
      */
     @Override
@@ -99,6 +100,6 @@ public class Plane extends Geometry {
         if (t <= 0) {
             return null;
         }
-        return List.of(new GeoPoint(this,ray.getPoint(t)));
+        return List.of(new GeoPoint(this, ray.getPoint(t)));
     }
 }

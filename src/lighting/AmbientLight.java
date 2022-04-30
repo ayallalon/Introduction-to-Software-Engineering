@@ -20,13 +20,7 @@ public class AmbientLight extends Light {
      * @param Ia illumination color for light
      * @param Ka attenuation factor
      */
-    public AmbientLight(Color Ia, Double3 Ka)
-    {
+    public AmbientLight(Color Ia, Double3 Ka) {
         super(Ia.scale(Ka));
-    }
-
-    @Override
-    public Color getIntensity() {
-        return super.getIntensity();
     }
 }

@@ -1,24 +1,17 @@
 package lighting;
 
-import primitives.*;
+import primitives.Color;
+import primitives.Point;
+import primitives.Vector;
 
-/**
- *
- */
+
 public interface LightSource {
 
     /**
-     *
-     * @param p
-     * @return
+     * @param p point
+     * @return intensity of this point
      */
-    public Color getIntensity(Point p);
+    Color getIntensity(Point p);
 
-    /**
-     *
-     * @param p
-     * @return
-     */
-    public Vector getL(Point p);
-
+    Vector getL(Point p);
 }

@@ -2,7 +2,6 @@ package renderer;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
-import geometries.Intersectable.GeoPoint;
 
 import java.util.MissingResourceException;
 import primitives.Color;
@@ -46,7 +45,6 @@ public class Camera {
 
     /**
      * set view plane Distance
-     * @param distance
      * @return the distance
      */
     public Camera setVPDistance(double distance) {
@@ -100,7 +98,6 @@ public class Camera {
 
     /**
      * set ImageWriter
-     * @param imageWriter
      * @return imageWriter
      */
     public Camera setImageWriter(ImageWriter imageWriter) {
@@ -110,7 +107,6 @@ public class Camera {
 
     /**
      * set RayTracer
-     * @param rayTracer
      * @return RayTracer
      */
     public Camera setRayTracer(RayTracer rayTracer) {
@@ -122,11 +118,12 @@ public class Camera {
      * Function writeToImage produces unoptimized png file of the image according to
      * pixel color matrix in the directory of the project
      */
-    public void writeToImage() {
+    public Camera writeToImage() {
         if (imageWriter == null) {
             throw new MissingResourceException("missing imagewriter", "Camera", "in print Grid");
         }
         imageWriter.writeToImage();
+        return this;
     }
 
     /**
@@ -168,41 +165,38 @@ public class Camera {
      * pixel appropriately thus
      * rendering the image
      */
-    public void renderImage() {
+    public Camera renderImage() {
         try {
             if (imageWriter == null) {
                 throw new MissingResourceException("missing resource", ImageWriter.class.getName(),
-                        "");
+                                                   "");
             }
             if (rayTracer == null) {
                 throw new MissingResourceException("missing resource", RayTracer.class.getName(),
-                        "");
+                                                   "");
             }
 
             //rendering the image
             int Nx = imageWriter.getNx();
             int Ny = imageWriter.getNy();
 
-            for (int row = 0; row < Nx; row++) {
-                for (int col = 0; col < Ny; col++) {
-                    castRay(Nx,Ny,row,col);//check the parameter
+            for (int row = 0; row < Ny; row++) {
+                for (int col = 0; col < Nx; col++) {
+                    castRay(Nx, Ny, row, col);//check the parameter
                 }
             }
         } catch (MissingResourceException e) {
             throw new UnsupportedOperationException("Not implemented yet" + e.getClassName());
         }
+        return this;
     }
 
     /**
      *
-     * @param Nx
-     * @param Ny
-     * @param row
-     * @param col
      */
-    private void castRay(int Nx, int Ny, int row , int col) {
-        Ray ray = constructRay(Nx, Ny,row, col);
+    private void castRay(int Nx, int Ny, int row, int col) {
+        Ray ray = constructRay(Nx, Ny, col, row);
         Color color = rayTracer.traceRay(ray);
-        imageWriter.writePixel( row,col, color);
+        imageWriter.writePixel(col, row, color);
     }
 }

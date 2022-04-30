@@ -7,17 +7,16 @@ import primitives.Vector;
 
 public abstract class Geometry extends Intersectable {
 
-    protected Color emission = Color.BLACK;;
-    private Material material = new Material();
+    protected Color emission;
+    private Material material;
 
     public Geometry() {
-        this.emission = emission;
-        this.material = material;
+        this.emission = Color.BLACK;
+        this.material = new Material();
     }
 
     /**
      *
-     * @return
      */
     public Material getMaterial() {
         return material;
@@ -25,8 +24,6 @@ public abstract class Geometry extends Intersectable {
 
     /**
      *
-     * @param material
-     * @return
      */
     public Geometry setMaterial(Material material) {
         this.material = material;
@@ -43,7 +40,6 @@ public abstract class Geometry extends Intersectable {
 
     /**
      *
-     * @param emission
      */
     public Geometry setEmission(Color emission) {
         this.emission = emission;

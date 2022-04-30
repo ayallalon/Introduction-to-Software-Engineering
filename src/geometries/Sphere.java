@@ -1,11 +1,11 @@
 package geometries;
 
+import static primitives.Util.alignZero;
+
 import java.util.List;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-
-import static primitives.Util.alignZero;
 
 
 public class Sphere extends Geometry {
@@ -58,8 +58,7 @@ public class Sphere extends Geometry {
          if(point.equals(_center)){
          throw new IllegalArgumentException("ERROR - p equal center");}
          */
-        /*Vector n = point.subtract(_center);
-        return n.normalize();*/
+
         return point.subtract(center).normalize();
     }
 
@@ -74,7 +73,7 @@ public class Sphere extends Geometry {
         Vector v = ray.getDir();      //get dir of ray
 
         if (P0.equals(center)) {    //if start of ray equal to the sphere's center
-            return List.of(new GeoPoint(this,ray.getPoint(radius)));
+            return List.of(new GeoPoint(this, ray.getPoint(radius)));
         }
 
         Vector U = center.subtract(P0);
@@ -91,17 +90,17 @@ public class Sphere extends Geometry {
         double t2 = alignZero(tm + th);
 
         if (t1 > 0 && t2 > 0) {
-            Point P1 =ray.getPoint(t1);
-            Point P2 =ray.getPoint(t2);
-            return List.of(new GeoPoint(this,P1),new GeoPoint(this,P2));
+            Point P1 = ray.getPoint(t1);
+            Point P2 = ray.getPoint(t2);
+            return List.of(new GeoPoint(this, P1), new GeoPoint(this, P2));
         }
         if (t1 > 0) {
-            Point P1 =ray.getPoint(t1);
-            return List.of(new GeoPoint(this,P1));
+            Point P1 = ray.getPoint(t1);
+            return List.of(new GeoPoint(this, P1));
         }
         if (t2 > 0) {
-            Point P2 =ray.getPoint(t2);
-            return List.of(new GeoPoint(this,P2));
+            Point P2 = ray.getPoint(t2);
+            return List.of(new GeoPoint(this, P2));
         }
         return null;
     }

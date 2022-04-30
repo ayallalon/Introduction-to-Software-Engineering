@@ -8,6 +8,10 @@ public abstract class Light {
     protected Color intensity;
 
 
+    /**
+     * constructor
+     * @param intensity of the light
+     */
     protected Light(Color intensity) {
 
         this.intensity = intensity;

@@ -25,15 +25,29 @@ public class RayTracerBasic extends RayTracer {
     private static final double MIN_CALC_COLOR_K = 0.001;
     private boolean bb;
 
+    /**
+     * constructor
+     * @param scene
+     */
     public RayTracerBasic(Scene scene) {
         super(scene);
     }
 
+    /**
+     * setBb
+     * @param bb
+     * @return bb
+     */
     public RayTracer setBb(boolean bb) {
         this.bb = bb;
         return this;
     }
 
+    /**
+     * findClosestIntersection
+     * @param ray
+     * @return list of the Closest Intersection point
+     */
     private Point findClosestIntersection(Ray ray) {
         List<Point> intersections;
         intersections = scene.getGeometries().findIntersections(ray);
@@ -61,12 +75,24 @@ public class RayTracerBasic extends RayTracer {
         return calcColor(closesPoint, ray);
     }
 
+    /**
+     * calcColor
+     * @param gp
+     * @param ray
+     * @return the color
+     */
     private Color calcColor(GeoPoint gp, Ray ray) {
         Color result = scene.getAmbientLight().getIntensity();
         result = result.add(calcLocalEffects(gp, ray)).add(gp.geometry.getEmission());
         return result;
     }
 
+    /**
+     * calcLocalEffects
+     * @param gp
+     * @param ray
+     * @return color effects
+     */
     private Color calcLocalEffects(Intersectable.GeoPoint gp, Ray ray) {
         Color color = Color.BLACK;
         Vector v = ray.getDir();
@@ -90,6 +116,12 @@ public class RayTracerBasic extends RayTracer {
         return color;
     }
 
+    /**
+     * unshaded
+     * @param gp
+     * @param l
+     * @return if has unshaded
+     */
     private boolean unshaded(GeoPoint gp, Vector l) {
         Vector lightDirection = l.scale(-1); // from point to light source
         Ray lightRay = new Ray(gp.point, lightDirection);
@@ -97,10 +129,25 @@ public class RayTracerBasic extends RayTracer {
         return intersections == null;
     }
 
+    /**
+     * calcDiffusive
+     * @param material
+     * @param nl
+     * @return
+     */
     private Double3 calcDiffusive(Material material, double nl) {
         return material.kD.scale(Math.abs(nl));
     }
 
+    /**
+     * calcSpecular
+     * @param material of the geometry
+     * @param n
+     * @param l
+     * @param nl
+     * @param v
+     * @return scale of the geometry
+     */
     private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
         Vector r = l.subtract(n.scale(l.dotProduct(n) * 2)).normalize();
         return material.kS.scale(

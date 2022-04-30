@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public class Ray {
 
-    private final Point p0;
-    private final Vector dir;
+    private final Point p0;   // point that the ray started
+    private final Vector dir; // direction
 
     /**
      * Constructor

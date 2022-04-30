@@ -21,10 +21,10 @@ public abstract class Intersectable {
     }
 
     /**
-     *
+     *find GeoIntersections
      */
     public final List<GeoPoint> findGeoIntersections(Ray ray) {
-        //...
+        // send to findGeoIntersectionsHelper
         return findGeoIntersectionsHelper(ray);
     }
 
@@ -33,7 +33,7 @@ public abstract class Intersectable {
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
 
     /**
-     *
+     *class of GeoPoint
      */
     public static class GeoPoint {
 
@@ -41,7 +41,7 @@ public abstract class Intersectable {
         public final Point point;      //
 
         /**
-         *
+         *constructor
          */
         public GeoPoint(Geometry geometry, Point point) {
             this.geometry = geometry;
@@ -52,6 +52,7 @@ public abstract class Intersectable {
         public int hashCode() {
             return Objects.hash(geometry, point);
         }
+
 
         @Override
         public boolean equals(Object obj) {

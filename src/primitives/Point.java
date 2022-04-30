@@ -34,10 +34,18 @@ public class Point {
         return xyz;
     }
 
+    /**
+     * get X
+     * @return X
+     */
     public double getX() {
         return xyz.d1;
     }
 
+    /**
+     * get Y
+     * @return Y
+     */
     public double getY() {
         return xyz.d2;
     }

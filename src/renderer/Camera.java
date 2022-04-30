@@ -132,19 +132,6 @@ public class Camera {
      * @param color wanted color for grid lines
      */
     public void printGrid(int interval, Color color) {
-
-//        if (imageWriter == null) {
-//            throw new MissingResourceException("missing imagewriter", "Camera", "in print Grid");
-//        }
-//
-//        for (int row = 0; row < imageWriter.getNx(); row++) {
-//            for (int col = 0; col < imageWriter.getNy(); col++) {
-//                if (row % interval == 0 || col % interval == 0) {
-//                    imageWriter.writePixel(row, col, color);
-//                }
-//            }
-//            imageWriter.writeToImage();
-//        }
         if (imageWriter == null) {
             throw new MissingResourceException("missing imagewriter", "Camera", "in print Grid");
         }
@@ -192,7 +179,8 @@ public class Camera {
     }
 
     /**
-     *
+     * castRay
+     * renderImage sent to this func to help
      */
     private void castRay(int Nx, int Ny, int row, int col) {
         Ray ray = constructRay(Nx, Ny, col, row);

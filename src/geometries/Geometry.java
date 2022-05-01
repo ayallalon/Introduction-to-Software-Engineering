@@ -16,14 +16,14 @@ public abstract class Geometry extends Intersectable {
     }
 
     /**
-     *
+     *get Material
      */
     public Material getMaterial() {
         return material;
     }
 
     /**
-     *
+     *set Material
      */
     public Geometry setMaterial(Material material) {
         this.material = material;
@@ -39,7 +39,7 @@ public abstract class Geometry extends Intersectable {
     }
 
     /**
-     *
+     *set Emission
      */
     public Geometry setEmission(Color emission) {
         this.emission = emission;

@@ -57,6 +57,7 @@ public class Polygon extends Geometry {
             return; // no need for more tests for a Triangle
         }
 
+        
         Vector n = plane.getNormal();
 
         // Subtracting any subsequent points will throw an IllegalArgumentException

@@ -27,7 +27,6 @@ public class RayTracerBasic extends RayTracer {
 
     /**
      * constructor
-     * @param scene
      */
     public RayTracerBasic(Scene scene) {
         super(scene);
@@ -35,7 +34,6 @@ public class RayTracerBasic extends RayTracer {
 
     /**
      * setBb
-     * @param bb
      * @return bb
      */
     public RayTracer setBb(boolean bb) {
@@ -45,7 +43,6 @@ public class RayTracerBasic extends RayTracer {
 
     /**
      * findClosestIntersection
-     * @param ray
      * @return list of the Closest Intersection point
      */
     private Point findClosestIntersection(Ray ray) {
@@ -77,8 +74,6 @@ public class RayTracerBasic extends RayTracer {
 
     /**
      * calcColor
-     * @param gp
-     * @param ray
      * @return the color
      */
     private Color calcColor(GeoPoint gp, Ray ray) {
@@ -89,8 +84,6 @@ public class RayTracerBasic extends RayTracer {
 
     /**
      * calcLocalEffects
-     * @param gp
-     * @param ray
      * @return color effects
      */
     private Color calcLocalEffects(Intersectable.GeoPoint gp, Ray ray) {
@@ -106,11 +99,12 @@ public class RayTracerBasic extends RayTracer {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) {
-                //if (unshaded(gp, l)) {
-                Color iL = lightSource.getIntensity(gp.point);
-                color = color.add(iL.scale(calcDiffusive(material, nl)),
-                                  iL.scale(calcSpecular(material, n, l, nl, v)));
-                //}
+                if (unshaded(gp, lightSource, n, nl)) {
+                    Color iL = lightSource.getIntensity(gp.point);
+                    color = color.add(
+                        iL.scale(calcDiffusive(material, nl)),
+                        iL.scale(calcSpecular(material, n, l, nl, v)));
+                }
             }
         }
         return color;
@@ -118,22 +112,28 @@ public class RayTracerBasic extends RayTracer {
 
     /**
      * unshaded
-     * @param gp
-     * @param l
      * @return if has unshaded
      */
-    private boolean unshaded(GeoPoint gp, Vector l) {
+    private boolean unshaded(GeoPoint gp, LightSource lightSource, Vector n, double nl) {
+        Point point = gp.point;
+        Vector l = lightSource.getL(point);
         Vector lightDirection = l.scale(-1); // from point to light source
-        Ray lightRay = new Ray(gp.point, lightDirection);
-        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
-        return intersections == null;
+        Ray lightRay = new Ray(point, n, lightDirection);
+        List<GeoPoint> intersections = scene.getGeometries().findGeoIntersections(lightRay);
+        double maxDistance = lightSource.getDistance(point);
+        if (intersections != null) {
+            for (GeoPoint geoPoint : intersections) {
+                double distance = geoPoint.point.distance(point);
+                if (distance >= maxDistance) {
+                    intersections.remove(geoPoint);
+                }
+            }
+        }
+        return intersections.isEmpty();
     }
 
     /**
      * calcDiffusive
-     * @param material
-     * @param nl
-     * @return
      */
     private Double3 calcDiffusive(Material material, double nl) {
         return material.kD.scale(Math.abs(nl));
@@ -142,10 +142,6 @@ public class RayTracerBasic extends RayTracer {
     /**
      * calcSpecular
      * @param material of the geometry
-     * @param n
-     * @param l
-     * @param nl
-     * @param v
      * @return scale of the geometry
      */
     private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {

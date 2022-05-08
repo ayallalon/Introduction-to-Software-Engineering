@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Ray {
-
+    private static final double DELTA = 0.1;
+        //Delta value to move the point away from original point
     private final Point p0;   // point that the ray started
     private final Vector dir; // direction
 
@@ -18,6 +19,16 @@ public class Ray {
         this.p0 = p0;
         this.dir = dir.normalize();
     }
+
+    public Ray(Point point, Vector direction, Vector normal) {
+        //point + normal.scale(±EPSILON)
+        dir = direction.normalize();
+        double nv = normal.dotProduct(dir);
+        Vector normalDelta = normal.scale((nv > 0 ? DELTA : -DELTA));
+
+        p0 = point.add(normalDelta);
+    }
+
 
     /**
      * get P0

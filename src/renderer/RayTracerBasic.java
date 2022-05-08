@@ -120,6 +120,9 @@ public class RayTracerBasic extends RayTracer {
         Vector lightDirection = l.scale(-1); // from point to light source
         Ray lightRay = new Ray(point, n, lightDirection);
         List<GeoPoint> intersections = scene.getGeometries().findGeoIntersections(lightRay);
+        if(intersections == null){
+            return  true;
+        }
         double maxDistance = lightSource.getDistance(point);
         if (intersections != null) {
             for (GeoPoint geoPoint : intersections) {

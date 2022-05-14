@@ -26,6 +26,7 @@ public class RayTracerBasic extends RayTracer {
     private static final double DELTA = 0.1;
     private boolean bb;
 
+
     /**
      * constructor
      */
@@ -123,8 +124,8 @@ public class RayTracerBasic extends RayTracer {
         Point pointRay = (point.add(delVector));
         Ray lightRay = new Ray(pointRay, lightDirection);
         List<GeoPoint> intersections = scene.getGeometries().findGeoIntersections(lightRay);
-        if(intersections == null){
-            return  true;
+        if (intersections == null) {
+            return true;
         }
         double maxDistance = lightSource.getDistance(point);
         if (intersections == null) {

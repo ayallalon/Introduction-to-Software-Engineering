@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Ray {
     private static final double DELTA = 0.1;
-        //Delta value to move the point away from original point
+    //Delta value to move the point away from original point
     private final Point p0;   // point that the ray started
     private final Vector dir; // direction
 
@@ -25,7 +25,6 @@ public class Ray {
         dir = direction.normalize();
         double nv = normal.dotProduct(dir);
         Vector normalDelta = normal.scale((nv > 0 ? DELTA : -DELTA));
-
         p0 = point.add(normalDelta);
     }
 
@@ -125,7 +124,8 @@ public class Ray {
         GeoPoint closestPoint = null;
 
         for (var geoPoint : pointList) {
-            pointDistance = p0.distanceSquared(geoPoint.point);
+            pointDistance = geoPoint.point.distanceSquared(p0);
+            // pointDistance = p0.distanceSquared(geoPoint.point);
             if (pointDistance < minDistance) {
                 minDistance = pointDistance;
                 closestPoint = geoPoint;

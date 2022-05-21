@@ -63,6 +63,7 @@ public class Scene {
         return geometries;
     }
 
+
     /**
      * SceneBuilder that build the scene
      */

@@ -87,34 +87,18 @@ public class Ray {
      * @return the closes point
      */
     public Point findClosestPoint(List<Point> pointList) {
-        //the list is empty
-        if (pointList == null || pointList.isEmpty()) {
-            return null;
-        }
-
-        double minDistance = Double.MAX_VALUE;
-        double pointDistance;
-
-        Point closestPoint = null;
-
-        for (Point point : pointList) {
-            pointDistance = point.distanceSquared(p0);
-            if (pointDistance < minDistance) {
-                minDistance = pointDistance;
-                closestPoint = point;
-            }
-        }
-        return closestPoint;
+        List<GeoPoint> list = pointList.stream().map(p -> new GeoPoint(null, p)).toList();
+        return findClosestGeoPoint(list).point;
     }
 
     /**
      * Calculator the closes point to the ray
-     * @param pointList list of point that intersection with ray
+     * @param geoPoints list of point that intersection with ray
      * @return the closes point
      */
-    public GeoPoint findClosestGeoPoint(List<GeoPoint> pointList) {
-        //the list is empty
-        if (pointList == null) {
+    public GeoPoint findClosestGeoPoint(List<GeoPoint> geoPoints) {
+        //the list is empty                           //
+        if (geoPoints == null) {
             return null;
         }
 
@@ -123,9 +107,8 @@ public class Ray {
 
         GeoPoint closestPoint = null;
 
-        for (var geoPoint : pointList) {
+        for (var geoPoint : geoPoints) {
             pointDistance = geoPoint.point.distanceSquared(p0);
-            // pointDistance = p0.distanceSquared(geoPoint.point);
             if (pointDistance < minDistance) {
                 minDistance = pointDistance;
                 closestPoint = geoPoint;

@@ -40,7 +40,7 @@ public class Triangle extends Polygon {
      * @return list of point that intersections between the triangle to ray
      */
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         List<GeoPoint> result = plane.findGeoIntersections(ray);
         if (result == null) {
             return null;

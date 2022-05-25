@@ -57,7 +57,7 @@ public class Polygon extends Geometry {
             return; // no need for more tests for a Triangle
         }
 
-        
+
         Vector n = plane.getNormal();
 
         // Subtracting any subsequent points will throw an IllegalArgumentException
@@ -108,7 +108,7 @@ public class Polygon extends Geometry {
      * @return list of point that intersections between the polygon to ray
      */
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         List<GeoPoint> result = plane.findGeoIntersections(ray);
         if (result == null) {
             return result;

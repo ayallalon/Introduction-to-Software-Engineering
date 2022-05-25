@@ -23,6 +23,7 @@ public class Sphere extends Geometry {
         this.radius = radius;
     }
 
+
     /**
      * get Center
      * @return Center
@@ -68,7 +69,7 @@ public class Sphere extends Geometry {
      * @return list of point that intersections between the sphere to ray
      */
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         Point P0 = ray.getP0();        //get point of start ray
         Vector v = ray.getDir();      //get dir of ray
 
@@ -89,16 +90,17 @@ public class Sphere extends Geometry {
         double t1 = alignZero(tm - th);
         double t2 = alignZero(tm + th);
 
-        if (t1 > 0 && t2 > 0) {
+        if (t1 > 0 && t2 > 0 && alignZero(t1 - maxDistance) < 0
+            && alignZero(t2 - maxDistance) < 0) {
             Point P1 = ray.getPoint(t1);
             Point P2 = ray.getPoint(t2);
             return List.of(new GeoPoint(this, P1), new GeoPoint(this, P2));
         }
-        if (t1 > 0) {
+        if (t1 > 0 && alignZero(t1 - maxDistance) < 0) {
             Point P1 = ray.getPoint(t1);
             return List.of(new GeoPoint(this, P1));
         }
-        if (t2 > 0) {
+        if (t2 > 0 && alignZero(t2 - maxDistance) < 0) {
             Point P2 = ray.getPoint(t2);
             return List.of(new GeoPoint(this, P2));
         }

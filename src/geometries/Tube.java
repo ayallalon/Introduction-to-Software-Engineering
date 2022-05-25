@@ -10,7 +10,7 @@ import primitives.Vector;
 public class Tube extends Geometry {
 
     protected final Ray ray; //dur for tube
-     final double radius; // radius for tube
+    final double radius; // radius for tube
 
     /**
      * Constructor

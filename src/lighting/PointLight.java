@@ -7,9 +7,9 @@ import primitives.Vector;
 public class PointLight extends Light implements LightSource {
 
     public Point position;
-    public double kC;
-    public double kL;
-    public double kQ;
+    public double kC = 1.0;
+    public double kL = 0d;
+    public double kQ = 0d;
 
     /**
      * constructor
@@ -17,9 +17,6 @@ public class PointLight extends Light implements LightSource {
     public PointLight(Color intensity, Point position) {
         super(intensity);
         this.position = position;
-        this.kC = 1d;
-        this.kL = 0d;
-        this.kQ = 0d;
     }
 
     /**

@@ -1,8 +1,5 @@
 package primitives;
 
-import java.util.Objects;
-
-
 public class Point {
 
     public static final Point ZERO = new Point(0d, 0d, 0d);
@@ -52,7 +49,7 @@ public class Point {
 
     @Override
     public int hashCode() {
-        return Objects.hash(xyz);
+        return xyz.hashCode();
     }
 
     @Override
@@ -60,7 +57,7 @@ public class Point {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Point)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         Point point = (Point)o;
@@ -69,7 +66,30 @@ public class Point {
 
     @Override
     public String toString() {
-        return "Point : " + "_xyz=" + xyz;
+        return "Point " + xyz;
+    }
+
+    /**
+     * Calculate the squared distance of two point
+     * @return distance Squared of two point
+     */
+    public double distanceSquared(Point other) {
+        double x1 = xyz.d1;
+        double y1 = xyz.d1;
+        double z1 = xyz.d1;
+
+        double x2 = other.xyz.d1;
+        double y2 = other.xyz.d1;
+        double z2 = other.xyz.d1;
+        return ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1));
+    }
+
+    /**
+     * Calculate the distance of two point
+     * @return distance=sqrt(lengthSquare
+     */
+    public double distance(Point p1) {
+        return Math.sqrt(distanceSquared(p1));
     }
 
 
@@ -92,29 +112,5 @@ public class Point {
      */
     public Vector subtract(Point p1) {
         return new Vector(xyz.subtract(p1.xyz));
-    }
-
-    /**
-     * Calculate the squared distance of two point
-     * @return distance Squared of two point
-     */
-    public double distanceSquared(Point other) {
-        double x1 = xyz.d1;
-        double y1 = xyz.d1;
-        double z1 = xyz.d1;
-
-        double x2 = other.xyz.d1;
-        double y2 = other.xyz.d1;
-        double z2 = other.xyz.d1;
-        return ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1));
-    }
-
-
-    /**
-     * Calculate the distance of two point
-     * @return distance=sqrt(lengthSquare
-     */
-    public double distance(Point p1) {
-        return Math.sqrt(distanceSquared(p1));
     }
 }

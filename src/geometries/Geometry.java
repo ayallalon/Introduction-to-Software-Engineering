@@ -7,23 +7,26 @@ import primitives.Vector;
 
 public abstract class Geometry extends Intersectable {
 
-    protected Color emission;
-    private Material material;
-
-    public Geometry() {
-        this.emission = Color.BLACK;
-        this.material = new Material();
-    }
+    protected Color emission = Color.BLACK;
+    private Material material = new Material();
 
     /**
-     *get Material
+     * declaration of getNormal method from a specific Point
+     * to a specific Geometry object
+     * @param point Point from where to create a Normal vector to the geometry object
+     * @return normal vector
+     */
+    public abstract Vector getNormal(Point point);
+
+    /**
+     * get Material
      */
     public Material getMaterial() {
         return material;
     }
 
     /**
-     *set Material
+     * set Material
      */
     public Geometry setMaterial(Material material) {
         this.material = material;
@@ -39,15 +42,10 @@ public abstract class Geometry extends Intersectable {
     }
 
     /**
-     *set Emission
+     * set Emission
      */
     public Geometry setEmission(Color emission) {
         this.emission = emission;
         return this;
     }
-
-    /**
-     * @return normal from the point to geometries
-     */
-    public abstract Vector getNormal(Point point);
 }

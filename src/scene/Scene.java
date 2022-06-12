@@ -9,11 +9,11 @@ import primitives.Color;
 
 public class Scene {
 
-    public final String name;                // name of the scene
-    public final Color background;           // the color of background
-    public final AmbientLight ambientLight;  // the ambientLight
-    public final Geometries geometries;      // the geometries in the scene
-    public List<LightSource> lights = new LinkedList<>();
+    private final String name;                // name of the scene
+    private final Color background;           // the color of background
+    private final List<LightSource> lights;
+    private final Geometries geometries;      // the geometries in the scene
+    private AmbientLight ambientLight;  // the ambientLight
 
     /***
      * constructor
@@ -24,11 +24,12 @@ public class Scene {
         background = builder.background;
         ambientLight = builder.ambientLight;
         geometries = builder.geometries;
+        lights = builder.lights;
     }
 
-    public Scene setLight(List<LightSource> lights) {
-        this.lights = lights;
-        return this;
+
+    public List<LightSource> getLights() {
+        return lights;
     }
 
     /**
@@ -51,8 +52,13 @@ public class Scene {
      * get AmbientLight
      * @return AmbientLight
      */
-    public AmbientLight getAmbientLight() {
+    public AmbientLight getAmbienLight() {
         return ambientLight;
+    }
+
+    public Scene setAmbientLight(AmbientLight ambientLight) {
+        this.ambientLight = ambientLight;
+        return this;
     }
 
     /**
@@ -69,6 +75,7 @@ public class Scene {
      */
     public static class SceneBuilder {
         private final String name;
+        private List<LightSource> lights = new LinkedList<>();
         private Color background = Color.BLACK;
         private AmbientLight ambientLight = new AmbientLight();
         private Geometries geometries = new Geometries();
@@ -80,7 +87,11 @@ public class Scene {
         public SceneBuilder(String name) {
             this.name = name;
         }
-        //caning methods
+
+        public SceneBuilder setLights(List<LightSource> lights) {
+            this.lights = lights;
+            return this;
+        }
 
         /**
          * set AmbientLight

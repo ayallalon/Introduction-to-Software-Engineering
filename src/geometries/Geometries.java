@@ -7,7 +7,7 @@ import primitives.Ray;
 
 public class Geometries extends Intersectable {
 
-    protected List<Intersectable> intersectList;
+    protected List<Intersectable> intersectList = null;
 
 
     /**
@@ -20,16 +20,21 @@ public class Geometries extends Intersectable {
     /**
      * Initialize the geometries based on the geometries received
      */
-    public Geometries(Intersectable... geometries) {
-        intersectList = new LinkedList<>();
-        add(geometries);
+    public Geometries(Intersectable... intersectables) {
+        this();
+        add(intersectables);
     }
 
     /**
      * Add new geometries
      */
-    public void add(Intersectable... geometries) {
-        Collections.addAll(intersectList, geometries);
+    public void add(Intersectable... intersectables) {
+
+        Collections.addAll(intersectList, intersectables);
+    }
+
+    public void remove(Intersectable... intersectables) {
+        intersectList.removeAll(List.of(intersectables));
     }
 
     /**
@@ -45,8 +50,8 @@ public class Geometries extends Intersectable {
         }
         List<GeoPoint> result = null;
         for (var item : intersectList) {                        // for all geometries in the list
-            List<GeoPoint> itemList = item.findGeoIntersections(ray,
-                                                                maxDistance); // find intersections
+            List<GeoPoint> itemList = item.findGeoIntersectionsHelper(ray,
+                                                                      maxDistance); // find intersections
             if (itemList != null) {
                 if (result == null) {
                     result = new LinkedList<>();

@@ -22,10 +22,10 @@ public class Ray {
 
     public Ray(Point point, Vector direction, Vector normal) {
         //point + normal.scale(±EPSILON)
-        dir = direction.normalize();
-        double nv = normal.dotProduct(dir);
+        this.dir = direction.normalize();
+        double nv = normal.dotProduct(this.dir);
         Vector normalDelta = normal.scale((nv > 0 ? DELTA : -DELTA));
-        p0 = point.add(normalDelta);
+        this.p0 = point.add(normalDelta);
     }
 
 
@@ -58,7 +58,7 @@ public class Ray {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getP0(), getDir());
+        return Objects.hash(p0, dir);
     }
 
     @Override
@@ -75,9 +75,10 @@ public class Ray {
 
     @Override
     public String toString() {
-        return "Ray : " +
+        return "Ray{" +
                "p0=" + p0 +
-               ", direction=" + dir;
+               ", dir=" + dir +
+               '}';
     }
 
 
@@ -87,8 +88,12 @@ public class Ray {
      * @return the closes point
      */
     public Point findClosestPoint(List<Point> pointList) {
-        List<GeoPoint> list = pointList.stream().map(p -> new GeoPoint(null, p)).toList();
-        return findClosestGeoPoint(list).point;
+        return pointList == null || pointList.isEmpty()
+               ? null
+               : findClosestGeoPoint(pointList.stream()
+                                              .map(p -> new GeoPoint(null, p))
+                                              .toList()
+                                    ).point;
     }
 
     /**
@@ -104,7 +109,6 @@ public class Ray {
 
         double minDistance = Double.MAX_VALUE;
         double pointDistance;
-
         GeoPoint closestPoint = null;
 
         for (var geoPoint : geoPoints) {

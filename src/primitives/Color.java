@@ -1,7 +1,5 @@
 package primitives;
 
-import java.util.Objects;
-
 /**
  * Wrapper class for java.jwt.Color The constructors operate with any
  * non-negative RGB values. The colors are maintained without upper limit of
@@ -10,7 +8,6 @@ import java.util.Objects;
  * @author Dan Zilberstein
  */
 public class Color {
-    public static final Color BLUE = new Color(0, 0, 255 / 2d);
     /**
      * Black color = (0,0,0)
      */
@@ -36,9 +33,8 @@ public class Color {
      * @param b Blue component
      */
     public Color(double r, double g, double b) {
-        if (r < 0 || g < 0 || b < 0) {
+        if (r < 0 || g < 0 || b < 0)
             throw new IllegalArgumentException("Negative color component is illegal");
-        }
         rgb = new Double3(r, g, b);
     }
 
@@ -49,9 +45,8 @@ public class Color {
      * @param rgb triad of Red/Green/Blue components
      */
     private Color(Double3 rgb) {
-        if (rgb.d1 < 0 || rgb.d2 < 0 || rgb.d3 < 0) {
+        if (rgb.d1 < 0 || rgb.d2 < 0 || rgb.d3 < 0)
             throw new IllegalArgumentException("Negative color component is illegal");
-        }
         this.rgb = rgb;
     }
 
@@ -98,9 +93,8 @@ public class Color {
      * @return new Color object which is the result of the operation
      */
     public Color scale(Double3 k) {
-        if (k.d1 < 0.0 || k.d2 < 0.0 || k.d3 < 0.0) {
+        if (k.d1 < 0.0 || k.d2 < 0.0 || k.d3 < 0.0)
             throw new IllegalArgumentException("Can't scale a color by a negative number");
-        }
         return new Color(rgb.product(k));
     }
 
@@ -110,9 +104,8 @@ public class Color {
      * @return new Color object which is the result of the operation
      */
     public Color scale(double k) {
-        if (k < 0.0) {
+        if (k < 0.0)
             throw new IllegalArgumentException("Can't scale a color by a negative number");
-        }
         return new Color(rgb.scale(k));
     }
 
@@ -122,9 +115,8 @@ public class Color {
      * @return new Color object which is the result of the operation
      */
     public Color reduce(double k) {
-        if (k < 1) {
+        if (k < 1)
             throw new IllegalArgumentException("Can't scale a color by a by a number lower than 1");
-        }
         return new Color(rgb.reduce(k));
     }
 
@@ -134,26 +126,13 @@ public class Color {
      * @return new Color object which is the result of the operation
      */
     public Color reduce(Double3 k) {
-        if (k.d1 < 1.0 || k.d2 < 1.0 || k.d3 < 1.0) {
+        if (k.d1 < 1.0 || k.d2 < 1.0 || k.d3 < 1.0)
             throw new IllegalArgumentException("Can't scale a color by a by a number lower than 1");
-        }
         return new Color(rgb.d1 / k.d1, rgb.d2 / k.d2, rgb.d3 / k.d3);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(rgb);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Color)) {
-            return false;
-        }
-        final Color color = (Color)o;
-        return Objects.equals(rgb, color.rgb);
+    public String toString() {
+        return "rgb:" + rgb;
     }
 }

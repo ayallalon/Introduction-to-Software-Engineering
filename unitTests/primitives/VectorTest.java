@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static primitives.Util.isZero;
 
+import org.junit.jupiter.api.Test;
+
 class VectorTest {
     Vector v1 = new Vector(1, 2, 3);
     Vector v2 = new Vector(-2, -4, -6);
@@ -36,7 +38,7 @@ class VectorTest {
     /**
      * Test method for {@link primitives.Vector#dotProduct(primitives.Vector)}.
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void testDotProduct() {
 
         // =============== Boundary Values Tests ==================

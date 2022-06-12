@@ -1,6 +1,5 @@
 package renderer;
 
-import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 import java.util.MissingResourceException;
@@ -40,7 +39,7 @@ public class Camera {
         this.vTo = vTo.normalize();
         this.vUp = vUp.normalize();
 
-        vRight = this.vTo.crossProduct(this.vUp);
+        this.vRight = this.vTo.crossProduct(this.vUp);
     }
 
     /**
@@ -64,36 +63,43 @@ public class Camera {
         return this;
     }
 
+
     /**
-     * Constructing a ray through a pixel.
-     * @param Nx pixels of the width in the view plane
-     * @param Ny pixels of the height in the view plane
-     * @return ray from the camera to pixel[i, j]
+     * this function gets the view plane size and a selected pixel,
+     * and return the ray from the camera which intersects this pixel
+     * @param nX - amount of rows in view plane (number of pixels)
+     * @param nY - amount of columns in view plane (number of pixels)
+     * @param j - X's index
+     * @param i - Y's index
+     * @return - the ray which goes through the pixel
      */
-    public Ray constructRay(int Nx, int Ny, int j, int i) {
-        //image center
+    public Ray constructRay(int nX, int nY, int j, int i) {
+
+        //view plane center Point
         Point Pc = p0.add(vTo.scale(distance));
 
-        //Ratio (pixel width and height)
-        double Ry = alignZero(height / Ny);
-        double Rx = alignZero(width / Nx);
+        //pixels ratios
+        double Rx = width / nX;
+        double Ry = height / nY;
 
-        //pixel [i, j] center
+        //Pij point[i,j] in view-plane coordinates
         Point Pij = Pc;
 
-        //delta values for going to pixel[i,j] from pc.
+        //delta values for moving on the view=plane
+        double Xj = (j - (nX - 1) / 2d) * Rx;
+        double Yi = -(i - (nY - 1) / 2d) * Ry;
 
-        double yI = alignZero(-(i - (Ny - 1) / 2d) * Ry);
-        double xJ = alignZero((j - (Nx - 1) / 2d) * Rx);
-
-        if (!isZero(xJ)) {
-            Pij = Pij.add(vRight.scale(xJ));
+        if (!isZero(Xj)) {
+            Pij = Pij.add(vRight.scale(Xj));
         }
-        if (!isZero(yI)) {
-            Pij = Pij.add(vUp.scale(yI));
+        if (!isZero(Yi)) {
+            Pij = Pij.add(vUp.scale(Yi));
         }
 
-        return new Ray(p0, Pij.subtract(p0));
+        // vector from camera's eye in the direction of point(i,j) in the viewplane
+        Vector Vij = Pij.subtract(p0);
+
+        return new Ray(p0, Vij);
     }
 
     /**
@@ -164,12 +170,12 @@ public class Camera {
             }
 
             //rendering the image
-            int Nx = imageWriter.getNx();
-            int Ny = imageWriter.getNy();
+            int nX = imageWriter.getNx();
+            int nY = imageWriter.getNy();
 
-            for (int row = 0; row < Ny; row++) {
-                for (int col = 0; col < Nx; col++) {
-                    castRay(Nx, Ny, row, col);//check the parameter
+            for (int row = 0; row < nY; row++) {
+                for (int col = 0; col < nX; col++) {
+                    castRay(nX, nY, row, col);//check the parameter
                 }
             }
         } catch (MissingResourceException e) {
@@ -178,13 +184,17 @@ public class Camera {
         return this;
     }
 
+
     /**
-     * castRay
-     * renderImage sent to this func to help
+     * Cast ray from camera in order to color a pixel
+     * @param nX - resolution on X axis (number of pixels in row)
+     * @param nY - resolution on Y axis (number of pixels in column)
+     * @param icol - pixel's column number (pixel index in row)
+     * @param jrow - pixel's row number (pixel index in column)
      */
-    private void castRay(int Nx, int Ny, int row, int col) {
-        Ray ray = constructRay(Nx, Ny, col, row);
-        Color color = rayTracer.traceRay(ray);
-        imageWriter.writePixel(col, row, color);
+    private void castRay(int nX, int nY, int icol, int jrow) {
+        Ray ray = constructRay(nX, nY, jrow, icol);
+        Color pixelColor = rayTracer.traceRay(ray);
+        imageWriter.writePixel(jrow, icol, pixelColor);
     }
 }

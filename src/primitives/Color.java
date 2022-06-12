@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.List;
+
 /**
  * Wrapper class for java.jwt.Color The constructors operate with any
  * non-negative RGB values. The colors are maintained without upper limit of
@@ -14,6 +16,11 @@ public class Color {
 	 * whatever...
 	 */
 	private final Double3 rgb;
+
+	/**
+	 * How much change allowed in the color.
+	 */
+	public static final double EPSILON = 0.001;
 
 	/**
 	 * Black color = (0,0,0)
@@ -140,6 +147,21 @@ public class Color {
 		if (k.d1 < 1.0 || k.d2 < 1.0 || k.d3 < 1.0)
 			throw new IllegalArgumentException("Can't scale a color by a by a number lower than 1");
 		return new Color(rgb.d1 / k.d1, rgb.d2 / k.d2, rgb.d3 / k.d3);
+	}
+
+	public boolean equals(Color other) {
+		return Math.abs(rgb.d1 - other.rgb.d1) <= EPSILON &&
+			   Math.abs(rgb.d2 - other.rgb.d2) <= EPSILON &&
+			   Math.abs(rgb.d3 - other.rgb.d3) <= EPSILON;
+	}
+
+
+	public static boolean allEquals(Color... colors){
+		boolean result = true;
+		for (int i = 1; i < colors.length && result; i++) {
+			result = colors[0].equals(colors[i]);
+		}
+		return result;
 	}
 
 	@Override

@@ -24,6 +24,14 @@ public class RayTracerBasic extends RayTracer {
     }
 
     @Override
+    public Color traceRays(List<Ray> rays) {
+        Color sum = Color.BLACK;
+        for (Ray ray : rays) {
+            sum = sum.add(traceRay(ray));
+        }
+        return sum.reduce(rays.size());
+    }
+    @Override
     public Color traceRay(Ray ray) {
         GeoPoint closestPoint = findClosestIntersection(ray);
         if (closestPoint == null) {

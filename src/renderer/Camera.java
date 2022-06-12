@@ -1,5 +1,6 @@
 package renderer;
 
+import java.util.stream.IntStream;
 import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
@@ -60,7 +61,7 @@ public class Camera {
 
     private ImageWriter imageWriter;
     private RayTracer rayTracer;
-    private double superSampling;
+    private int superSampling;
     private double aperture;
     private double focus;
     private double dofSampling;
@@ -80,7 +81,7 @@ public class Camera {
 
         this.vTo = vTo.normalize();
         this.vUp = vUp.normalize();
-
+        superSampling = 1;
         vRight = this.vTo.crossProduct(this.vUp);
     }
     
@@ -186,6 +187,70 @@ public class Camera {
         return new Ray(p0, Vij);
 
     }
+
+    /**
+     * The function constructs a beam of rays from Camera location throw the pixel
+     * (i,j) in the view plane - the ray starts at the pixel if Depth of Field is
+     * activated!!!
+     *
+     * @param nX             number of pixels in a row of view plane
+     * @param nY             number of pixels in a column of view plane
+     * @param j              number of the pixel in a row
+     * @param i              number of the pixel in a column
+     * @param dist distance from the camera to the view plane
+     * @param width    view plane width
+     * @param height   view plane height
+     * @return the beam of rays from pixel (if DoF is active) or from camera
+     */
+    public List<Ray> constructRaysThroughPixel(int nX, int nY, int j, int i, double dist, double width, double height) {
+        if (superSampling == 1) {
+            return List.of(constructRay(nX, nY, j, i));
+        }
+        double rX = width / nX;
+        double rY = height / nY;
+        double xJ = (j - (nX - 1) / 2d) * rX;
+        double yI = (i - (nY - 1) / 2d) * rY;
+        Point pIJ = p0.add(vTo.scale(dist)); // the view plane center point
+        if (xJ != 0)
+            pIJ = pIJ.add(vRight.scale(xJ));
+        if (yI != 0)
+            pIJ = pIJ.add(vUp.scale(-yI)); // it's possible pIJ.subtract(_vUp.scale(yI));
+
+        if (superSampling == 0)
+            return constructFocalRays(pIJ);
+
+        List<Ray> rays = new LinkedList<>();
+        double y = -rY / 2d;
+        double dY = rY / superSampling;
+        double xStart = -rX / 2d;
+        double dX = rX / superSampling;
+        for (double row = superSampling; row >= 1; --row, y += dY) {
+            double x = xStart;
+            for (double col = superSampling; col >= 1; --col, x += dX) {
+                Point p = pIJ;
+                if (!isZero(x))
+                    p = pIJ.add(vRight.scale(x));
+                if (!isZero(y))
+                    p = p.add(vUp.scale(y));
+                rays.addAll(constructFocalRays(p));
+            }
+        }
+        return rays;
+    }
+
+    /**
+     * Cast ray from camera in order to color a pixel
+     *
+     * @param nX  - resolution on X axis (number of pixels in row)
+     * @param nY  - resolution on Y axis (number of pixels in column)
+     * @param icol - pixel's column number (pixel index in row)
+     * @param jrow - pixel's row number (pixel index in column)
+     */
+    private void castBeamRay(int nX, int nY, int icol, int jrow) {
+        List<Ray> rays = constructRaysThroughPixel(nX, nY, jrow, icol, distance, width, height);
+        Color pixelColor = rayTracer.traceRays(rays);
+        imageWriter.writePixel(jrow, icol, pixelColor);
+    }
     
      /**
      * This function renders image's pixel color map from the scene included with
@@ -199,15 +264,14 @@ public class Camera {
             if (rayTracer == null) {
                 throw new MissingResourceException("missing resource", RayTracer.class.getName(), "");
             }
-
             //rendering the image
             int nX = imageWriter.getNx();
             int nY = imageWriter.getNy();
-            for (int i = 0; i < nY; i++) {
-                for (int j = 0; j < nX; j++) {
-                    castRay(nX, nY, i, j);
-                }
-            }
+            IntStream.range(0, nY).parallel().forEach(i -> {
+                IntStream.range(0, nX).parallel().forEach(j -> {
+                    castBeamRay(nX, nY,i,j);
+                });
+            });
         } catch (MissingResourceException e) {
             throw new UnsupportedOperationException("Not implemented yet" + e.getClassName());
         }
@@ -227,73 +291,12 @@ public class Camera {
         Color pixelColor = rayTracer.traceRay(ray);
         imageWriter.writePixel(jrow, icol, pixelColor);
     }
-    /**
-     * Cast ray from camera in order to color a pixel
-     *
-     * @param nX  - resolution on X axis (number of pixels in row)
-     * @param nY  - resolution on Y axis (number of pixels in column)
-     * @param icol - pixel's column number (pixel index in row)
-     * @param jrow - pixel's row number (pixel index in column)
-     */
-    private void castBeamRay(int nX, int nY, int icol, int jrow) {
-        Ray mainRay = constructRay(nX, nY, jrow, icol);
-        
-        Color pixelColor = rayTracer.traceRay(mainRay);
-        imageWriter.writePixel(jrow, icol, pixelColor);
-    }
+
     /**
      * chaining functios
      */
     public void printGrid(int interval, Color color) {
         imageWriter.printGrid(interval, color);
-    }
-
-   
-    /**
-     * The function constructs a beam of rays from Camera location throw the pixel
-     * (i,j) in the view plane - the ray starts at the pixel if Depth of Field is
-     * activated!!!
-     *
-     * @param nX             number of pixels in a row of view plane
-     * @param nY             number of pixels in a column of view plane
-     * @param j              number of the pixel in a row
-     * @param i              number of the pixel in a column
-     * @param dist distance from the camera to the view plane
-     * @param width    view plane width
-     * @param height   view plane height
-     * @return the beam of rays from pixel (if DoF is active) or from camera
-     */
-    public List<Ray> constructRaysThroughPixel(int nX, int nY, int j, int i, double dist, double width, double height) {
-        double rX = width / nX;
-        double rY = height / nY;
-        double xJ = (j - (nX - 1) / 2d) * rX;
-        double yI = (i - (nY - 1) / 2d) * rY;
-        Point pIJ = p0.add(vTo.scale(dist)); // the view plane center point
-        if (xJ != 0)
-            pIJ = pIJ.add(vRight.scale(xJ));
-        if (yI != 0)
-            pIJ = pIJ.add(vUp.scale(-yI)); // it's possible pIJ.subtract(_vUp.scale(yI));
-
-        if (superSampling == 0)
-            return constructFocalRays(pIJ);
-
-        List<Ray> rays = new LinkedList<>();
-        double y = -rY / 2d;
-        double dY = rY / superSampling;
-        double xStart = -rX / 2d;
-        double dX = rX / superSampling;
-        for (double row = superSampling; row >= 0; --row, y += dY) {
-            double x = xStart;
-            for (double col = superSampling; col >= 0; --col, x += dX) {
-                Point p = pIJ;
-                if (!isZero(x))
-                    p = pIJ.add(vRight.scale(x));
-                if (!isZero(y))
-                    p = p.add(vUp.scale(y));
-                rays.addAll(constructFocalRays(p));
-            }
-        }
-        return rays;
     }
 
     private static Random rnd = new Random();

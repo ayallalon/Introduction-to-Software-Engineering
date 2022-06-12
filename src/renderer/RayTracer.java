@@ -1,5 +1,6 @@
 package renderer;
 
+import java.util.List;
 import primitives.Color;
 import primitives.Ray;
 import scene.Scene;
@@ -24,5 +25,12 @@ public abstract class RayTracer {
      * @return the color of the pixel intersects the given ray
      */
     public abstract Color traceRay(Ray ray);
+
+    /**
+     * abstract function to determine the color of a pixel
+     * @param rays - rays to intersect
+     * @return the color of the pixel intersects the given rays
+     */
+    public abstract Color traceRays(List<Ray> rays);
 
 }

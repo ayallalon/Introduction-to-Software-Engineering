@@ -1,76 +1,160 @@
 package renderer;
 
-import static primitives.Util.isZero;
-
-import java.util.MissingResourceException;
 import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.Random;
+
+import static primitives.Util.isZero;
+
 /**
- * camera protracting rays thought a view plane
+ *
+ * Class Camera represent a view of the geometric world through the view plane (which represent the picture),
+ * Through the view plane the camera captures the geometric world.
+ * it produces graphic views of the objects using the view plane and rays and object intersections.
+ * The rays converge according to the location of the pixel centers in the view plane.
+ * directions of the camera to the right, up and front  (compared to the original x,y,z axis),
+ * all vectors orthogonal to each other
  */
 public class Camera {
-
-    private final Point p0;//camera eye
-    private final Vector vTo; //vector pointing towards the scene
-    private final Vector vUp; //vector pointing upwards
-    private final Vector vRight; //vector pointing towards the right
-
-    private double distance;
-    private double width; // width for view plane
-    private double height;// height for view plane
+    
+    /**
+     * _P0 - the camera location
+     */
+    private Point p0;
+    
+    /**
+     * X axis vector
+     */
+    private Vector vTo;
+    
+    /**
+     * _Vup - Y axis vector
+     */
+    private Vector vUp;
+    
+     /**
+     * Z axis vector
+     */
+    private Vector vRight;
+    
+    /**
+     * object's actual distance from the camera center
+     */
+    private int distance;
+    
+    /**
+     * object's actual width
+     */
+    private double width;
+    
+    /**
+     * object's actual height
+     */
+    private double height;
 
     private ImageWriter imageWriter;
     private RayTracer rayTracer;
+    private double superSampling;
+    private double aperture;
+    private double focus;
+    private double dofSampling;
 
     /**
-     * constructor
-     * @param p0 center of the camera
-     * @param vTo dir camera
-     * @param vUp Camera location
+     * simple Camera constructor which get as input location point and two orthogonal vectors represent the direction
+     *
+     * @param p0  - the camera location
+     * @param vTo - Y axis vector
+     * @param vUp - X axis vector
      */
     public Camera(Point p0, Vector vTo, Vector vUp) {
-        if (!isZero(vUp.dotProduct(vTo))) {
-            throw new IllegalArgumentException("vTo and vUp should be orthogonal.");
+        if (!isZero(vTo.dotProduct(vUp))) {
+            throw new IllegalArgumentException("vto  and vup are not orthogonal");
         }
         this.p0 = p0;
+
         this.vTo = vTo.normalize();
         this.vUp = vUp.normalize();
 
-        this.vRight = this.vTo.crossProduct(this.vUp);
+        vRight = this.vTo.crossProduct(this.vUp);
     }
-
-    /**
-     * set view plane Distance
-     * @return the distance
+    
+     /**
+     * setter - chaining method
+     *
+     * @param distance - the object's actual distance from the camera center
+     * @return the camera with the configured distance
      */
-    public Camera setVPDistance(double distance) {
+    public Camera setVPDistance(int distance) {
         this.distance = distance;
         return this;
     }
-
+    
     /**
-     * set view plane Size
-     * @param width for view plane
-     * @param height for view plane
-     * @return width and height
+     * setter - chaining method
+     * @param width   - the width of the view plane
+     * @param height- the height of the view plane
+     * @return the camera with the configured view plane
      */
     public Camera setVPSize(double width, double height) {
         this.width = width;
         this.height = height;
         return this;
     }
+    /**
+    * setter for imageWriter
+    * @param imageWriter
+    * @return the image writer for the camera
+    */
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
+    }
 
+    public Camera setRayTracer(RayTracer rayTracer) {
+        this.rayTracer = rayTracer;
+        return this;
+    }
+    /**
+     * Enable Super Sampling feature, providing superSampling density
+     *
+     * @param density amount of rays per pixel width or height
+     * @return the camera itself - for chaining
+     */
+    public Camera enableSuperSampling(int density) {
+        this.superSampling = density;
+        return this;
+    }
 
+    /**
+     * Enable Depthe of Field feature, providing aperture and focus distance
+     *
+     * @param aperture at the view plane
+     * @param distance from view plane to focal plane
+     * @param density  amount of rays per aperture window width or height
+     * @return the camera itself - for chaining
+     */
+    public Camera enableDepthOfField(double aperture, double distance, int density) {
+        this.aperture = aperture;
+        this.focus = distance;
+        this.dofSampling = density;
+        return this;
+    }
+    // ***************** Operations ******************** //
+    
     /**
      * this function gets the view plane size and a selected pixel,
      * and return the ray from the camera which intersects this pixel
+     *
      * @param nX - amount of rows in view plane (number of pixels)
      * @param nY - amount of columns in view plane (number of pixels)
-     * @param j - X's index
-     * @param i - Y's index
+     * @param j  - X's index
+     * @param i  - Y's index
      * @return - the ray which goes through the pixel
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
@@ -100,82 +184,28 @@ public class Camera {
         Vector Vij = Pij.subtract(p0);
 
         return new Ray(p0, Vij);
+
     }
-
-    /**
-     * set ImageWriter
-     * @return imageWriter
-     */
-    public Camera setImageWriter(ImageWriter imageWriter) {
-        this.imageWriter = imageWriter;
-        return this;
-    }
-
-    /**
-     * set RayTracer
-     * @return RayTracer
-     */
-    public Camera setRayTracer(RayTracer rayTracer) {
-        this.rayTracer = rayTracer;
-        return this;
-    }
-
-    /**
-     * Function writeToImage produces unoptimized png file of the image according to
-     * pixel color matrix in the directory of the project
-     */
-    public Camera writeToImage() {
-        if (imageWriter == null) {
-            throw new MissingResourceException("missing imagewriter", "Camera", "in print Grid");
-        }
-        imageWriter.writeToImage();
-        return this;
-    }
-
-    /**
-     * paints the image as a grid according to the wanted interval and color of grid lines
-     * @param interval length of wanted interval
-     * @param color wanted color for grid lines
-     */
-    public void printGrid(int interval, Color color) {
-        if (imageWriter == null) {
-            throw new MissingResourceException("missing imagewriter", "Camera", "in print Grid");
-        }
-
-        for (int i = 0; i < imageWriter.getNx(); i++) {
-            for (int j = 0; j < imageWriter.getNy(); j++) {
-                if (i % interval == 0 || j % interval == 0) {
-                    imageWriter.writePixel(i, j, color);
-                }
-            }
-            imageWriter.writeToImage();
-        }
-    }
-
-
-    /**
-     * The actual rendering function , according to data received from the ray tracer - colours each
-     * pixel appropriately thus
-     * rendering the image
+    
+     /**
+     * This function renders image's pixel color map from the scene included with
+     * the Renderer object
      */
     public Camera renderImage() {
         try {
             if (imageWriter == null) {
-                throw new MissingResourceException("missing resource", ImageWriter.class.getName(),
-                                                   "");
+                throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
             }
             if (rayTracer == null) {
-                throw new MissingResourceException("missing resource", RayTracer.class.getName(),
-                                                   "");
+                throw new MissingResourceException("missing resource", RayTracer.class.getName(), "");
             }
 
             //rendering the image
             int nX = imageWriter.getNx();
             int nY = imageWriter.getNy();
-
-            for (int row = 0; row < nY; row++) {
-                for (int col = 0; col < nX; col++) {
-                    castRay(nX, nY, row, col);//check the parameter
+            for (int i = 0; i < nY; i++) {
+                for (int j = 0; j < nX; j++) {
+                    castRay(nX, nY, i, j);
                 }
             }
         } catch (MissingResourceException e) {
@@ -184,11 +214,11 @@ public class Camera {
         return this;
     }
 
-
     /**
      * Cast ray from camera in order to color a pixel
-     * @param nX - resolution on X axis (number of pixels in row)
-     * @param nY - resolution on Y axis (number of pixels in column)
+     *
+     * @param nX  - resolution on X axis (number of pixels in row)
+     * @param nY  - resolution on Y axis (number of pixels in column)
      * @param icol - pixel's column number (pixel index in row)
      * @param jrow - pixel's row number (pixel index in column)
      */
@@ -196,5 +226,109 @@ public class Camera {
         Ray ray = constructRay(nX, nY, jrow, icol);
         Color pixelColor = rayTracer.traceRay(ray);
         imageWriter.writePixel(jrow, icol, pixelColor);
+    }
+    /**
+     * Cast ray from camera in order to color a pixel
+     *
+     * @param nX  - resolution on X axis (number of pixels in row)
+     * @param nY  - resolution on Y axis (number of pixels in column)
+     * @param icol - pixel's column number (pixel index in row)
+     * @param jrow - pixel's row number (pixel index in column)
+     */
+    private void castBeamRay(int nX, int nY, int icol, int jrow) {
+        Ray mainRay = constructRay(nX, nY, jrow, icol);
+        
+        Color pixelColor = rayTracer.traceRay(mainRay);
+        imageWriter.writePixel(jrow, icol, pixelColor);
+    }
+    /**
+     * chaining functios
+     */
+    public void printGrid(int interval, Color color) {
+        imageWriter.printGrid(interval, color);
+    }
+
+   
+    /**
+     * The function constructs a beam of rays from Camera location throw the pixel
+     * (i,j) in the view plane - the ray starts at the pixel if Depth of Field is
+     * activated!!!
+     *
+     * @param nX             number of pixels in a row of view plane
+     * @param nY             number of pixels in a column of view plane
+     * @param j              number of the pixel in a row
+     * @param i              number of the pixel in a column
+     * @param dist distance from the camera to the view plane
+     * @param width    view plane width
+     * @param height   view plane height
+     * @return the beam of rays from pixel (if DoF is active) or from camera
+     */
+    public List<Ray> constructRaysThroughPixel(int nX, int nY, int j, int i, double dist, double width, double height) {
+        double rX = width / nX;
+        double rY = height / nY;
+        double xJ = (j - (nX - 1) / 2d) * rX;
+        double yI = (i - (nY - 1) / 2d) * rY;
+        Point pIJ = p0.add(vTo.scale(dist)); // the view plane center point
+        if (xJ != 0)
+            pIJ = pIJ.add(vRight.scale(xJ));
+        if (yI != 0)
+            pIJ = pIJ.add(vUp.scale(-yI)); // it's possible pIJ.subtract(_vUp.scale(yI));
+
+        if (superSampling == 0)
+            return constructFocalRays(pIJ);
+
+        List<Ray> rays = new LinkedList<>();
+        double y = -rY / 2d;
+        double dY = rY / superSampling;
+        double xStart = -rX / 2d;
+        double dX = rX / superSampling;
+        for (double row = superSampling; row >= 0; --row, y += dY) {
+            double x = xStart;
+            for (double col = superSampling; col >= 0; --col, x += dX) {
+                Point p = pIJ;
+                if (!isZero(x))
+                    p = pIJ.add(vRight.scale(x));
+                if (!isZero(y))
+                    p = p.add(vUp.scale(y));
+                rays.addAll(constructFocalRays(p));
+            }
+        }
+        return rays;
+    }
+
+    private static Random rnd = new Random();
+
+    /**
+     * Create beam of rays from view plane aperture hole through focal point
+     *
+     * @param pnt point at View Plane
+     * @return beam of rays
+     */
+    private List<Ray> constructFocalRays(Point pnt) {
+        Vector v = pnt.subtract(p0);
+        if (dofSampling == 0)
+            return List.of(new Ray(p0, v));
+
+        v.normalize();
+        Point f = pnt.add(v.scale(focus / vTo.dotProduct(v)));
+
+        List<Ray> rays = new LinkedList<>();
+        for (double i = dofSampling; i > 0; --i) {
+            double x = rnd.nextDouble() * 2 - 1;
+            double y = Math.sqrt(1 - x * x);
+            Point p = pnt;
+            double mult = (rnd.nextDouble() - 0.5) * aperture;
+            if (!isZero(x))
+                p.add(vRight.scale(x * mult));
+            if (!isZero(y))
+                p.add(vUp.scale(y * mult));
+            rays.add(new Ray(p, f.subtract(p)));
+        }
+        return rays;
+    }
+
+    public Camera writeToImage() {
+        imageWriter.writeToImage();
+        return this;
     }
 }

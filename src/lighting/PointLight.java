@@ -6,25 +6,16 @@ import primitives.Point;
 import primitives.Vector;
 
 public class PointLight extends Light implements LightSource {
-
     private final Point position;
+    private Double3 Kc = Double3.ONE;
     private Double3 Kl = Double3.ZERO;
     private Double3 Kq = Double3.ZERO;
-    private Double3 Kc = Double3.ONE;
 
-    /**
-     * constructor
-     */
     public PointLight(Color intensity, Point position) {
         super(intensity);
         this.position = position;
     }
 
-    /**
-     * get Intensity
-     * @param point point
-     * @return Intensity of the light
-     */
     @Override
     public Color getIntensity(Point point) {
         Color Ic = getIntensity();
@@ -36,10 +27,6 @@ public class PointLight extends Light implements LightSource {
         return Ic.reduce(factor);
     }
 
-    /**
-     * get light
-     * @return point's super
-     */
     @Override
     public Vector getL(Point point) {
         return point.subtract(position).normalize();

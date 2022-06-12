@@ -3,29 +3,20 @@ package renderer;
 import org.junit.jupiter.api.Test;
 import primitives.Color;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class ImageWriterTest {
 
-    /**
-     * test for WriteToImage
-     */
     @Test
     void testWriteToImage() {
         int nX = 800;
         int nY = 500;
+        Color yellow  = new Color(255d,255d,0d);
+        Color red = new Color(255d,0d,0d);
 
-        ImageWriter imageWriter = new ImageWriter("yellowred", nX, nY);
-        Color yellowColor = new Color(255, 255, 0); // yellow Color
-        Color redColor = new Color(255, 0, 0);      //red Color
-        for (int i = 0; i < nX; i++) {                      // for all row
-            for (int j = 0; j < nY; j++) {                  // for all cow
-                if (i % 50 == 0 || j % 50 == 0) {
-                    imageWriter.writePixel(i, j, redColor);
-                } else {
-                    imageWriter.writePixel(i, j, yellowColor);
-                }
-            }
-
-            imageWriter.writeToImage();
-        }
+        ImageWriter imageWriter = new ImageWriter("yellowTestWithGrid",nX,nY);
+        imageWriter.fillBackground(yellow);
+        imageWriter.printGrid(50,red);
+        imageWriter.writeToImage();
     }
 }

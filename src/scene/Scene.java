@@ -1,25 +1,24 @@
 package scene;
 
-import geometries.Geometries;
-import java.util.LinkedList;
-import java.util.List;
 import lighting.AmbientLight;
+import geometries.Geometries;
+import lighting.Light;
 import lighting.LightSource;
 import primitives.Color;
+import primitives.Point;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class Scene {
 
-    private final String name;                // name of the scene
-    private final Color background;           // the color of background
+    private final String name;
+    private final Color background;
+    private final Geometries geometries;
     private final List<LightSource> lights;
-    private final Geometries geometries;      // the geometries in the scene
-    private AmbientLight ambientLight;  // the ambientLight
+    private AmbientLight ambientLight;
 
-    /***
-     * constructor
-     * @param builder that build the scene
-     */
-    public Scene(SceneBuilder builder) {
+    private Scene(SceneBuilder builder) {
         name = builder.name;
         background = builder.background;
         ambientLight = builder.ambientLight;
@@ -27,32 +26,15 @@ public class Scene {
         lights = builder.lights;
     }
 
-
-    public List<LightSource> getLights() {
-        return lights;
-    }
-
-    /**
-     * get Name
-     * @return Name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * get Background
-     * @return Background
-     */
     public Color getBackground() {
         return background;
     }
 
-    /**
-     * get AmbientLight
-     * @return AmbientLight
-     */
-    public AmbientLight getAmbienLight() {
+    public AmbientLight getAmbientLight() {
         return ambientLight;
     }
 
@@ -61,31 +43,29 @@ public class Scene {
         return this;
     }
 
-    /**
-     * get Geometries
-     * @return Geometries
-     */
     public Geometries getGeometries() {
         return geometries;
     }
 
+    public List<LightSource> getLights() {
+        return lights;
+    }
 
-    /**
-     * SceneBuilder that build the scene
-     */
     public static class SceneBuilder {
+
         private final String name;
         private List<LightSource> lights = new LinkedList<>();
         private Color background = Color.BLACK;
         private AmbientLight ambientLight = new AmbientLight();
         private Geometries geometries = new Geometries();
 
-        /**
-         * constructor
-         * @param name of scene
-         */
         public SceneBuilder(String name) {
             this.name = name;
+        }
+
+        public SceneBuilder setBackground(Color background) {
+            this.background = background;
+            return this;
         }
 
         public SceneBuilder setLights(List<LightSource> lights) {
@@ -93,40 +73,28 @@ public class Scene {
             return this;
         }
 
-        /**
-         * set AmbientLight
-         * @param ambientLight of the geometries
-         * @return AmbientLight
-         */
         public SceneBuilder setAmbientLight(AmbientLight ambientLight) {
             this.ambientLight = ambientLight;
             return this;
         }
 
-        /**
-         * set Geometries
-         * @param geometries in the scene
-         * @return Geometries
-         */
         public SceneBuilder setGeometries(Geometries geometries) {
             this.geometries = geometries;
             return this;
         }
 
-        /**
-         * set Background
-         * @param background of thr scene
-         * @return Background
-         */
-        public SceneBuilder setBackground(Color background) {
-            this.background = background;
-            return this;
+        public Scene build() {
+            //            validateObject(scene);
+            return new Scene(this);
         }
 
+        private void validateObject(Scene scene) {
+            //nothing to do
+        }
 
-        public Scene build() {
-            Scene scene = new Scene(this);
-            return scene;
+        public SceneBuilder readXmlFile(String filename) {
+            //to do
+            return this;
         }
     }
 }

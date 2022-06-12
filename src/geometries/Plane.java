@@ -1,69 +1,84 @@
 package geometries;
 
-import static primitives.Util.alignZero;
-import static primitives.Util.isZero;
-
-import java.util.List;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
 
-public class Plane extends FlatGeometry {
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
-    final Point q0;
+/**
+ * Plane class represents two-dimensional infinite plane in 3D Cartesian coordinates
+ */
+public class Plane extends  FlatGeometry {
+     final Point q0;
 
 
     /**
      * Constructor of Plane based on a point and a directional vector
-     * @param q0 referenced Point
+     *
+     * @param q0     referenced Point
      * @param normal Positional vector for the Plane (will be normalized automatically)
      */
     public Plane(Point q0, Vector normal) {
         this.q0 = q0;
-        this.normal = normal.normalize();
-    }
-
+        this.normal= normal.normalize();
+      }
 
     /**
      * Constructor of Plane based on three Points
+     *
      * @param p1 first Point
      * @param p2 second point
      * @param p3 third Point
      */
     public Plane(Point p1, Point p2, Point p3) {
         this.q0 = p1;
-        Vector u = p1.subtract(p2);
-        Vector v = p1.subtract(p3);
-        Vector n = u.crossProduct(v);
-        this.normal = n.normalize();
+
+        Vector U = p1.subtract(p2);     // AB
+        Vector V = p1.subtract(p3);     // AC
+
+        Vector N = U.crossProduct(V);   // AB X AC
+
+        //right hand rule
+       this.normal = N.normalize();
     }
 
     /**
      * getter for Q0 : referenced 3D Point of the plane
+     *
      * @return q0
      */
     public Point getQ0() {
         return q0;
     }
 
+    /**
+     * getter for _normal field of the Plane
+     *
+     * @return normal
+     */
+    public Vector getNormal() {
+        return normal;
+    }
 
     /**
-     * Print plane's point and normal.
+     * implementation of getNormal from {@link Geometry#getNormal(Point)}
+     *
+     * @param point Point from where to create a Normal vector to the geometry object
+     * @return normal
      */
     @Override
-    public String toString() {
-        return "Plane : " + "point=" + q0 + ", normal=" + normal;
+    public Vector getNormal(Point point) {
+        return normal;
+        //return getNormal();
     }
 
 
-    /**
-     * findIntersections find intersections between the plane to ray
-     * @param ray The Ray to intersect
-     * @return list of point that intersections between the plane to ray
-     */
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         Point P0 = ray.getP0();
         Vector v = ray.getDir();
 
@@ -93,7 +108,7 @@ public class Plane extends FlatGeometry {
 
         double t = alignZero(nP0Q0 / nv);
 
-        if (t < 0 || alignZero(t - maxDistance) > 0) {
+        if (t < 0 ||  alignZero(t - maxDistance) > 0) {
             return null;
         }
 
@@ -101,23 +116,5 @@ public class Plane extends FlatGeometry {
         Point point = ray.getPoint(t);
 
         return List.of(new GeoPoint(this, point));
-    }
-
-    /**
-     * getter for _normal field of the Plane
-     * @return normal
-     */
-    public Vector getNormal() {
-        return normal;
-    }
-
-    /**
-     * implementation of getNormal from {@link Geometry#getNormal(Point)}
-     * @param point Point from where to create a Normal vector to the geometry object
-     * @return normal
-     */
-    @Override
-    public Vector getNormal(Point point) {
-        return normal;
     }
 }

@@ -1,6 +1,8 @@
 package renderer;
 
 import primitives.Color;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -89,5 +91,27 @@ public class ImageWriter {
 	public void writePixel(int xIndex, int yIndex, Color color) {
 		image.setRGB(xIndex, yIndex, color.getColor().getRGB());
 	}
+	
+    	 /**
+     	* Create a grid [over the picture] in the pixel color map. given the grid's
+     	* step and color.
+	*
+     	* @param step  grid's step
+     	* @param color grid's color
+     	*/
+    	public void printGrid(int interval, Color color) {
+		for (int i = 0; i < nY; i++) {
+			for (int j = 0; j < nX; j++) {
+				if (i % interval == 0 || j % interval == 0) {
+					writePixel(j, i, color);
+				}
+			}
+		}
+    	}
 
+	public void fillBackground(Color bacckgroundColor) {
+		Graphics2D g2d = image.createGraphics();
+		g2d.setColor(bacckgroundColor.getColor());
+		g2d.fillRect(0, 0, nX, nY);
+	}
 }

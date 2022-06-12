@@ -1,124 +1,129 @@
 package renderer;
 
+import org.junit.jupiter.api.Test;
+
+import geometries.*;
+import primitives.*;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import geometries.Geometry;
-import geometries.Plane;
-import geometries.Sphere;
-import geometries.Triangle;
-import org.junit.jupiter.api.Test;
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+/**
+ * @author Dan
+ */
 
-public class CameraIntegrationTest {
-
+class CameraIntegrationTest {
     /**
-     * Integration tests of Camera Ray with Ray-Sphere intersections.
-     * all the test were taken from the presentation of the pre-curse.
+     * Test helper function to count the intersections and compare with expected value
+     *
+     * @param cam      camera for the test
+     * @param geo      3D body to test the integration of the camer with
+     * @param expected amount of intersections
+     * @author Dan Zilberstein
      */
+    private void assertCountIntersections(Camera cam, Intersectable geo, int expected) {
+        int count = 0;
 
+        List<Point> allpoints = null;
 
-    //create camera's
-    Camera camera1 = new Camera(new Point(0, 0, 0), new Vector(0, 0, -1), new Vector(0, 1, 0))
-        .setVPSize(3, 3)
-        .setVPDistance(1);
-    Camera camera2 = new Camera(new Point(0, 0, 0.5), new Vector(0, 0, -1), new Vector(0, 1, 0))
-        .setVPSize(3, 3)
-        .setVPDistance(1);
-
-    /**
-     * Sphere integration
-     */
-
-    @Test
-    void testIntegrationCameraSphere() {
-        //create sphere
-        Sphere sphere1 = new Sphere(new Point(0, 0, -3), 1);
-        // TC01: The sphere is small and far from the VP => 2 points
-        assertEquals(2, countIntersection(camera1, sphere1, 3, 3),
-                     "testIntegrationCameraSphere=> should return 2 point");
-        // TC02:The sphere is big and close => 18 points
-        Sphere sphere2 = new Sphere(new Point(0, 0, -2.5), 2.5);
-        assertEquals(18, countIntersection(camera2, sphere2, 3, 3),
-                     "testIntegrationCameraSphere=> should return 18 point");
-        // TC03: The sphere is medium => 10 points
-        Sphere sphere3 = new Sphere(new Point(0, 0, -2), 2);
-        assertEquals(10, countIntersection(camera2, sphere3, 3, 3),
-                     "testIntegrationCameraSphere=> should return 10 point");
-        // TC04: The camera is inside the Sphere => 9 points
-        Sphere sphere4 = new Sphere(new Point(0, 0, -1), 4);
-        assertEquals(9, countIntersection(camera2, sphere4, 3, 3),
-                     "testIntegrationCameraSphere=> should return 9 point");
-        // TC05: The sphere is behind the camera => 0 points
-        Sphere sphere5 = new Sphere(new Point(0, 0, 1), 0.5);
-        assertEquals(0, countIntersection(camera1, sphere5, 3, 3),
-                     "testIntegrationCameraSphere=> should return 0 point");
-    }
-
-    /**
-     * Triangle integrations
-     */
-
-    @Test
-    void testIntegrationCameraTriangle() {
-        // TC01: The triangle is small => 1 point
-        Triangle triangle1 = new Triangle(new Point(0, 1, -2), new Point(1, -1, -2),
-                                          new Point(-1, -1, -2));
-        assertEquals(1, countIntersection(camera1, triangle1, 3, 3),
-                     "testIntegrationCameraTriangle => should return 1 point");
-        // TC02:  The triangle is medium triangle => 2 points
-        Triangle triangle2 = new Triangle(new Point(0, 20, -2), new Point(1, -1, -2),
-                                          new Point(-1, -1, -2));
-        assertEquals(2, countIntersection(camera1, triangle2, 3, 3),
-                     "testIntegrationCameraTriangle => should return 2 point");
-    }
-
-
-    /**
-     * test for IntegrationCameraPlane
-     */
-    @Test
-    void testIntegrationCameraPlane() {
-        // TC01: The plane is against camera => 9 points
-        Plane plane1 = new Plane(new Point(0, 0, -5), new Vector(0, 0, 1));
-        assertEquals(9, countIntersection(camera1, plane1, 3, 3),
-                     "testIntegrationCameraPlane => should return 9 point");
-
-        // TC02: The Plane is with small angle => 9 points
-        Plane plane2 = new Plane(new Point(0, 0, -5), new Vector(0, 1, 2));
-        assertEquals(9, countIntersection(camera1, plane2, 3, 3),
-                     "testIntegrationCameraPlane => should return 9 point");
-
-        // TC03: The plane is parallel to lower rays => 6 points
-        Plane plane3 = new Plane(new Point(0, 0, -5), new Vector(0, 1, 1));
-        assertEquals(6, countIntersection(camera1, plane3, 3, 3),
-                     "testIntegrationCameraPlane => should return 6 point");
-
-
-        // TC04: The plane is behind the camera => 0 points
-        Plane plane4 = new Plane(new Point(0, 0, -5), new Vector(0, 1, 1));
-        assertEquals(6, countIntersection(camera1, plane4, 3, 3),
-                     "testIntegrationCameraPlane => should return 6 point");
-    }
-
-    /**
-     * @param camera that construct the rays
-     * @param nX row of the view plane
-     * @param nY cow of the view plane
-     * @return count the intersection from the camera to the geometry
-     */
-    private int countIntersection(Camera camera, Geometry geometry, int nX, int nY) {
-        int countIntersectionOfGeometries = 0;//count the intersection with the geometry
-        for (int i = 0; i < nY; i++) {        //row
-            for (int j = 0; j < nX; j++) {    //cow
-                Ray ray = camera.constructRay(nX, nY, j, i); //create ray to pixel
-                var intersection = geometry.findIntersections(ray); // find Intersections to the geometry with the ray
-                if (intersection != null) { //if there is intersection
-                    countIntersectionOfGeometries += intersection.size(); //count it
+        cam.setVPSize(3, 3);
+        cam.setVPDistance(1);
+        int nX = 3;
+        int nY = 3;
+        //view plane 3X3 (WxH 3X3 & nx,ny =3 => Rx,Ry =1)
+        for (int i = 0; i < nY; ++i) {
+            for (int j = 0; j < nX; ++j) {
+                var intersections = geo.findIntersections(cam.constructRay(nX, nY, j, i));
+                if (intersections != null) {
+                    if (allpoints == null) {
+                        allpoints = new LinkedList<>();
+                    }
+                    allpoints.addAll(intersections);
                 }
+                count += intersections == null ? 0 : intersections.size();
             }
         }
-        return countIntersectionOfGeometries;
+
+        System.out.format("there is %d points:%n", count);
+        if (allpoints != null) {
+            for (var item : allpoints) {
+                System.out.println(item);
+            }
+        }
+        System.out.println();
+
+        assertEquals(expected, count, "Wrong amount of intersections");
+    }
+
+    /**
+     * Integration tests of Camera Ray construction with Ray-Sphere intersections
+     */
+    @Test
+    public void cameraRaySphereIntegration() {
+        Camera cam1 = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, -1, 0));
+        Camera cam2 = new Camera(new Point(0, 0, 0.5), new Vector(0, 0, -1), new Vector(0, -1, 0));
+
+        // TC01: Small Sphere 2 points
+        assertCountIntersections(cam1, new Sphere(new Point(0, 0, -3), 1), 2);
+
+        // TC02: Big Sphere 18 points
+        assertCountIntersections(cam2, new Sphere(new Point(0, 0, -2.5), 2.5), 18);
+
+        // TC03: Medium Sphere 10 points
+        assertCountIntersections(cam2, new Sphere(new Point(0, 0, -2), 2), 10);
+
+        // TC04: Inside Sphere 9 points
+        assertCountIntersections(cam2, new Sphere(new Point(0, 0, -1), 4), 9);
+
+        // TC05: Beyond Sphere 0 points
+        assertCountIntersections(cam1, new Sphere(new Point(0, 0, 1), 0.5), 0);
+    }
+
+    /**
+     * Integration tests of Camera Ray construction with Ray-Plane intersections
+     */
+    @Test
+    public void cameraRayPlaneIntegration() {
+        Camera cam = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, -1, 0));
+
+        // TC01: Plane against camera 9 points
+        assertCountIntersections(cam, new Plane(new Point(0, 0, -5), new Vector(0, 0, 1)), 9);
+
+        // TC02: Plane with small angle 9 points
+        assertCountIntersections(cam, new Plane(new Point(0, 0, -5), new Vector(0, 1, 2)), 9);
+
+        // TC03: Plane parallel to lower rays 6 points
+        assertCountIntersections(cam, new Plane(new Point(0, 0, -5), new Vector(0, 1, 1)), 6);
+
+        // TC04: Beyond Plane 0 points
+        assertCountIntersections(cam, new Plane(new Point(0, 0, -5), new Vector(0, -1, 0)), 0);
+    }
+
+    /**
+     * Integration tests of Camera Ray construction with Ray-Triangle intersections
+     */
+    @Test
+    public void cameraRayTriangleIntegration() {
+        Camera cam = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, -1, 0));
+
+        // TC01: Small triangle 1 point
+        assertCountIntersections(cam, new Triangle(new Point(1, 1, -2), new Point(-1, 1, -2), new Point(0, -1, -2)), 1);
+
+        // TC02: Medium triangle 2 points
+        assertCountIntersections(cam, new Triangle(new Point(1, 1, -2), new Point(-1, 1, -2), new Point(0, -20, -2)), 2);
+    }
+
+    @Test
+    public void cameraRayGeometriesIntegration() {
+        Camera cam = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, -1, 0));
+        Geometries geometries= new Geometries(
+                new Triangle(new Point(1, 1, -2), new Point(-1, 1, -2), new Point(0, -20, -2)),  // 2
+                new Plane(new Point(0, 0, -5), new Vector(0, 1, 1)), // 6
+                new Sphere(new Point(0, 0, 1), 0.5), // 0
+                new Sphere(new Point(0, 0, -3), 1) // 2
+        );
+        assertCountIntersections(cam,geometries,10);
     }
 }

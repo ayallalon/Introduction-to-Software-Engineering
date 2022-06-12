@@ -1,55 +1,47 @@
 package primitives;
 
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 class PointTest {
+    Point point0 = new Point(1, 1, -100);
+    Point point1 = new Point(-1, 1, -99);
+    Point point2 = new Point(0, 0, -100);
+    Point point3 = new Point(0.5, 0, -100);
 
-    Point p1 = new Point(1, 2, 3);
-
-    /**
-     * Test method for {@link Point#distanceSquared(Point)}
-     */
-    @org.junit.jupiter.api.Test
-    void testDistanceSquared() {
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: Simple test
-        Point p2 = new Point(3, 4, 5);
-
-        assertEquals(12, p1.distanceSquared(p2), "ERROR: wrong distance squared.");
-    }
-
-    /**
-     * Test method for {@link Point#add(Vector) }
-     */
-    @org.junit.jupiter.api.Test
-    void testAdd() {
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: Simple test
-        assertEquals(new Point(0, 0, 0), p1.add(new Vector(-1, -2, -3)),
-                     "ERROR: Point + Vector does not work correctly");
-    }
-
-    /**
-     * Test method for {@link Point#subtract(Point) }
-     */
-    @org.junit.jupiter.api.Test
-    void testSubtract() {
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: Simple test
-        assertEquals(new Vector(1, 1, 1), new Point(2, 3, 4).subtract(p1),
-                     "ERROR: Point - Vector does not work correctly");
-    }
-
-    /**
-     * Test method for {@link Point#distance(Point) }
-     */
-    @org.junit.jupiter.api.Test
+    @Test
     void testDistance() {
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: Simple test
-        Point p2 = new Point(3, 4, 5);
-        assertEquals(Math.sqrt(12), p1.distance(p2), "ERROR: wrong distance between points.");
+
+        double resultsquared;
+        double result;
+
+        resultsquared = point3.distanceSquared(new Point(0, 0, -100));
+        System.out.println(resultsquared);
+        result = point3.distance(new Point(0, 0, -100));
+        System.out.println(result);
+    }
+
+
+    @Test
+    void testAdd() {
+    }
+
+    @Test
+    void testSubtract() {
+        Vector p0_p1 = point1.subtract(point0);
+        System.out.println("point0: " + point0);
+        System.out.println("point1: " + point1);
+        assertEquals(new Vector(-2d,0,1d),p0_p1,"substract not correct");
+    }
+
+    @Test
+    void testSubtract2() {
+        Point p1 = new Point(1, 2, 3);
+        Vector result = p1.subtract(new  Point(2, 3, 4));
+        if (!Point.ZERO.equals(p1.add(new Vector(-1, -2, -3))))
+            fail("ERROR: Point + Vector does not work correctly");
+        if (!new Vector(-1, -1, -1).equals(result))
+            fail("ERROR: Point - Point does not work correctly");
     }
 }

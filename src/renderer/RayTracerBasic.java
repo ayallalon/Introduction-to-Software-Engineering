@@ -54,7 +54,7 @@ public class RayTracerBasic extends RayTracer {
         }
 
         if (Color.allEquals(cubeColors)) {
-            return cubeColors[0].scale(n * n);
+            return cubeColors[0].scale(rays.size());
         }
 
         List<Ray> topRight = new LinkedList<>();

@@ -18,16 +18,4 @@ class VectorTest {
         assertEquals(new Vector(-1.0, -1.0, -2.0), v2);
     }
 
-    @Test
-    void testDotProduct() {
-
-    }
-
-    @Test
-    void testCrossProduct() {
-    }
-
-    @Test
-    void testNormalize() {
-    }
 }

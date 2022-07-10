@@ -100,4 +100,8 @@ public class Point {
     public double getY() {
         return xyz.d2;
     }
+
+    public double getZ() {
+        return xyz.d3;
+    }
 }

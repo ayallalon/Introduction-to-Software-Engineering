@@ -2,6 +2,7 @@ package renderer;
 
 import java.util.stream.IntStream;
 import primitives.Color;
+import primitives.Double3;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -334,4 +335,35 @@ public class Camera {
         imageWriter.writeToImage();
         return this;
     }
+
+
+    //moving and rotating camera
+    /**
+     * Adds the given amount to the camera's position
+     *
+     * @return the current camera
+     */
+    public Camera move(Double3 amount) {
+        p0 = p0.add(new Vector(amount));
+        return this;
+    }
+
+    /**
+     * Rotates the camera around the axes with the given angles
+     *
+     * @param x angles to rotate around the x axis
+     * @param y angles to rotate around the y axis
+     * @param z angles to rotate around the z axis
+     * @return the current camera
+     */
+    public Camera rotate(double x, double y, double z) {
+        vTo = vTo.rotateX(x).rotateY(y).rotateZ(z);
+        vUp = vUp.rotateX(x).rotateY(y).rotateZ(z);
+        vRight = vTo.crossProduct(vUp);
+
+        return this;
+    }
+
+
+
 }

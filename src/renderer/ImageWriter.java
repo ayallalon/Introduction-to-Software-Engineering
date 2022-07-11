@@ -20,8 +20,8 @@ import javax.imageio.*;
  * @author Dan
  */
 public class ImageWriter {
-	private int nX;
-	private int nY;
+	private int nX; //row
+	private int nY; //col
 
 	private static final String FOLDER_PATH = System.getProperty("user.dir") + "/images";
 
@@ -94,9 +94,8 @@ public class ImageWriter {
 	
     	 /**
      	* Create a grid [over the picture] in the pixel color map. given the grid's
-     	* step and color.
-	*
-     	* @param step  grid's step
+     	* step and color
+     	* @param interval grid's step
      	* @param color grid's color
      	*/
     	public void printGrid(int interval, Color color) {
@@ -109,9 +108,13 @@ public class ImageWriter {
 		}
     	}
 
-	public void fillBackground(Color bacckgroundColor) {
+	/**
+	 * fillBackground
+	 * @param backgroundColor the color of the background
+	 */
+	public void fillBackground(Color backgroundColor) {
 		Graphics2D g2d = image.createGraphics();
-		g2d.setColor(bacckgroundColor.getColor());
+		g2d.setColor(backgroundColor.getColor());
 		g2d.fillRect(0, 0, nX, nY);
 	}
 }

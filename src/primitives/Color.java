@@ -8,7 +8,7 @@ import java.util.List;
  * 255. Some additional operations are added that are useful for manipulating
  * light's colors
  * 
- * @author Dan Zilberstein
+
  */
 public class Color {
 	/**

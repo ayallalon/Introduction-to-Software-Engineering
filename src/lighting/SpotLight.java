@@ -9,16 +9,32 @@ public class SpotLight extends PointLight {
     private final Vector direction;
     private double narrowBeam = 0d;
 
+    /**
+     * SpotLight
+     * @param intensity
+     * @param position
+     * @param direction
+     */
     public SpotLight(Color intensity, Point position, Vector direction) {
         super(intensity, position);
         this.direction = direction.normalize();
     }
 
+    /**
+     * setNarrowBeam
+     * @param narrowBeam
+     * @return narrowBeam
+     */
     public SpotLight setNarrowBeam(double narrowBeam) {
         this.narrowBeam = narrowBeam;
         return this;
     }
 
+    /**
+     * getIntensity
+     * @param point origin of the light
+     * @return Intensity
+     */
     @Override
     public Color getIntensity(Point point) {
        Color Ic = super.getIntensity(point);
@@ -28,6 +44,10 @@ public class SpotLight extends PointLight {
        return Ic.scale(factor);
     }
 
+    /**
+     * getNarrowBeam
+     * @return narrowBeam
+     */
     public double getNarrowBeam() {
         return narrowBeam;
     }

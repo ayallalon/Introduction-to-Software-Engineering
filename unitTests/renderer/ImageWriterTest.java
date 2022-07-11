@@ -9,8 +9,8 @@ class ImageWriterTest {
 
     @Test
     void testWriteToImage() {
-        int nX = 800;
-        int nY = 500;
+        int nX = 800; //row
+        int nY = 500; //cow
         Color yellow  = new Color(255d,255d,0d);
         Color red = new Color(255d,0d,0d);
 

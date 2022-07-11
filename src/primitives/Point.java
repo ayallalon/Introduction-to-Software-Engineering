@@ -2,6 +2,9 @@ package primitives;
 
 import java.util.Objects;
 
+/**
+ * @author Ayala alon & Tehilagabay
+ */
 public class Point {
     public static final Point ZERO = new Point(Double3.ZERO);
     final Double3 xyz;
@@ -67,7 +70,7 @@ public class Point {
      *
      * @param other other is the second Point
      * @return d = Sqrt (lengthSquare)
-     * @link https://www.engineeringtoolbox.com/distance-relationship-between-two-points-d_1854.html
+     * {@see https://www.engineeringtoolbox.com/distance-relationship-between-two-points-d_1854.html}
      */
     public  double distance (Point other){
         return Math.sqrt(distanceSquared(other));

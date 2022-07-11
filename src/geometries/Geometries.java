@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Ayala alon & Tehila Gabay
+ */
 public class Geometries extends Intersectable {
 
     private List<Intersectable> _intersectables = null;

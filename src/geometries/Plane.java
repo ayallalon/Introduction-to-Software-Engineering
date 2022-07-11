@@ -11,6 +11,9 @@ import static primitives.Util.isZero;
 
 /**
  * Plane class represents two-dimensional infinite plane in 3D Cartesian coordinates
+ *
+ * @author Ayala alon & Tehila Gabay
+ *
  */
 public class Plane extends  FlatGeometry {
      final Point q0;

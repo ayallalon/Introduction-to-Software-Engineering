@@ -1,9 +1,13 @@
 package primitives;
 
 /**
+ *
  * this class represents the different materials of the surfaces
  * and the reflection of a light component on it,
  * in three known values: diffusion, specular, and shininess.
+ *
+ *
+ * @author Ayala alon & Tehila Gabay
  */
 public class Material {
 

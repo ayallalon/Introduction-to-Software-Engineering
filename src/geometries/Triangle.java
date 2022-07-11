@@ -9,6 +9,9 @@ import java.util.List;
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
+/**
+ * @author Ayala alon & Tehila Gabay
+ */
 public class Triangle extends Polygon {
 
     final Point p0;

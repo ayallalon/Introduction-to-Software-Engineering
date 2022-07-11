@@ -22,6 +22,9 @@ import static primitives.Util.isZero;
  * The rays converge according to the location of the pixel centers in the view plane.
  * directions of the camera to the right, up and front  (compared to the original x,y,z axis),
  * all vectors orthogonal to each other
+ *
+ * @author Ayala alon & Tehila Gabay
+ *
  */
 public class Camera {
     

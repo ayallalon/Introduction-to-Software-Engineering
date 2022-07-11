@@ -15,6 +15,10 @@ import primitives.Ray;
 import primitives.Vector;
 import scene.Scene;
 
+/**
+ * @author Ayala alon & Tehila Gabay
+ */
+
 public class RayTracerBasic extends RayTracer {
 
     /**
@@ -417,7 +421,7 @@ public class RayTracerBasic extends RayTracer {
 
         Double3 ktr = Double3.ONE;
 //        loop over intersections and for each intersection which is closer to the
-//        point than the light source multiply ktr by 𝒌𝑻 of its geometry.
+//        point than the light source multiply ktr by kt of its geometry.
 //        Performance:
 //        if you get close to 0 –it’s time to get out( return 0)
         for (var geo : intersections) {

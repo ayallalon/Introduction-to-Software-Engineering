@@ -10,6 +10,9 @@ import primitives.Point;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Ayala alon & Tehila Gabay
+ */
 public class Scene {
 
     private final String name;

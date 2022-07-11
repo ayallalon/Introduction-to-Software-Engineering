@@ -7,6 +7,9 @@ import java.util.List;
 
 /**
  * common interface for all intersect-able geometric objects
+ *
+ * * @author Ayala alon & Tehila Gabay
+ *
  */
 public abstract class Intersectable {
 

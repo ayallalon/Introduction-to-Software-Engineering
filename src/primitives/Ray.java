@@ -9,7 +9,7 @@ import static primitives.Util.isZero;
 import geometries.Intersectable.*;
 
 /**
- *
+ *@author Ayala alon & Tehila Gabay
  */
 public class Ray {
 

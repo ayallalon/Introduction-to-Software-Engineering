@@ -4,6 +4,9 @@ import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 
+/**
+ * @author Ayala alon & Tehila Gabay
+ */
 public interface LightSource {
     /**
      * get intensity of the light coming from a Point

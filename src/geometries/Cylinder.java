@@ -7,6 +7,9 @@ import java.util.List;
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
+/**
+ * @author Ayala alon & Tehilagabay
+ */
 public class Cylinder extends Tube {   // implements Geometry
     final double height;
     final Plane base1;

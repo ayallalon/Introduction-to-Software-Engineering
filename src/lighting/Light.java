@@ -2,6 +2,9 @@ package lighting;
 
 import primitives.Color;
 
+/**
+ * @author Ayala alon & Tehila Gabay
+ */
 public abstract class Light {
 
     protected final Color intensity;

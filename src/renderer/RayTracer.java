@@ -5,6 +5,10 @@ import primitives.Color;
 import primitives.Ray;
 import scene.Scene;
 
+/**
+ * @author Ayala alon & Tehila Gabay
+ */
+
 public abstract class RayTracer {
      /**
      * scene to be rendered

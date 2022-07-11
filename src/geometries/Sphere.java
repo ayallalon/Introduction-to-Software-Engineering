@@ -9,6 +9,10 @@ import java.util.Objects;
 
 import static primitives.Util.alignZero;
 
+/**
+ * @author Ayala alon & Tehila Gabay
+ */
+
 public class Sphere extends Geometry {
     final private  Point center;
     final private double radius;

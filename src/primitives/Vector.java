@@ -4,6 +4,9 @@ package primitives;
  * this class represents a Vector in 3D Cartesian coordinates
  * the class inherits  {@link Point}
  * the vector is represents starting from  all three axis origins: Point(0.0.0)
+ *
+ * @author Ayala alon & Tehila Gabay
+ *
  */
 public class Vector extends Point {
 
@@ -63,7 +66,8 @@ public class Vector extends Point {
      *
      * @param other the right vector of U.V
      * @return scalar value of the dot product
-     * @link https://www.mathsisfun.com/algebra/vectors-dot-product.html
+     *
+     * {@see  https://www.mathsisfun.com/algebra/vectors-dot-product.html}
      */
     public double dotProduct(Vector other) {
         return xyz.d1 * other.xyz.d1
@@ -93,7 +97,7 @@ public class Vector extends Point {
      *
      * @param other other the right vector of U.V
      * @return the vector resulting from the cross product (Right-hand rule)
-     * @link https://www.mathsisfun.com/algebra/vectors-cross-product.html
+     * {@see https://www.mathsisfun.com/algebra/vectors-cross-product.html}
      */
     public Vector crossProduct(Vector other) {
         double ax = xyz.d1;

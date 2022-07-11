@@ -7,6 +7,8 @@ import primitives.Vector;
 
 /**
  *  interface for all geometries objects
+ *
+ *   * @author Ayala alon & Tehila Gabay
  */
 public abstract class Geometry extends Intersectable{
 

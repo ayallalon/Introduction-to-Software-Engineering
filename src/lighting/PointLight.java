@@ -5,6 +5,9 @@ import primitives.Double3;
 import primitives.Point;
 import primitives.Vector;
 
+/**
+ * @author Ayala alon & Tehila Gabay
+ */
 public class PointLight extends Light implements LightSource {
     private final Point position;
     private Double3 Kc = Double3.ONE;  //constant attenuation factor

@@ -1,4 +1,4 @@
-# Introduction to Software Engineering
+# Introduction To Software Engineering
 ### Course number: 151055.3.5782
 
 ## Students
